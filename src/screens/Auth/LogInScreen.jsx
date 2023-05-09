@@ -4,6 +4,7 @@ import AuthHeader from '../../components/AuthHeader';
 import CustomInput from '../../components/CustomInput';
 import useAuth from '../../context/auth/useAuth';
 import CustomAuthButton from '../../components/CustomAuthButton';
+import RouteText from '../../components/RouteText';
 
 const LogInScreen = () => {
   const {email, setEmail, password, setPassword} = useAuth();
@@ -43,6 +44,11 @@ const LogInScreen = () => {
             backColor="#3B5999"
           />
         </View>
+        <RouteText
+          textIs="Don't have an account?"
+          routeText="Sign up"
+          routeTo="signup"
+        />
       </View>
     </SafeAreaView>
   );
