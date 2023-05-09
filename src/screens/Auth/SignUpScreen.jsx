@@ -1,11 +1,15 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import React from 'react';
+import AuthHeader from '../../components/AuthHeader';
 
 const SignUpScreen = () => {
   return (
-    <View>
-      <Text>SignUpScreen</Text>
-    </View>
+    <SafeAreaView
+      style={{flex: 1, paddingHorizontal: 20, backgroundColor: '#FFF'}}>
+      <View>
+        <AuthHeader headerText="Sign Up" subtitleText="Create a new account" />
+      </View>
+    </SafeAreaView>
   );
 };
 

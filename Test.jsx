@@ -1,11 +1,22 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {AuthNavigator, VerifiedNavigator} from './src/Navigators/Navigators';
+import {AuthProvider} from './src/context/auth/useAuth';
 
 const Test = () => {
+  const user = false;
   return (
-    <View>
-      <Text>Test</Text>
-    </View>
+    <NavigationContainer>
+      <AuthProvider>
+        {user ? (
+          <>
+            <VerifiedNavigator />
+          </>
+        ) : (
+          <AuthNavigator />
+        )}
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 
