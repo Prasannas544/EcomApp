@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     // borderTopRightRadius: 20,
     width: '100%',
     backgroundColor: '#FFF',
+    paddingHorizontal: 10,
   },
   signleContainer: {
     width: '25%',
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEEEEE',
     borderRadius: 40,
     paddingVertical: 0,
-    paddingRight: 5,
+    paddingRight: 7,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   activeIconContainer: {
     backgroundColor: '#000',
     borderRadius: 50,
-    padding: 5,
+    padding: 7,
   },
   activeText: {
     textTransform: 'capitalize',
