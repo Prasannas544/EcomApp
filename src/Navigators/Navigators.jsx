@@ -1,13 +1,13 @@
-import {View,Text,Pressable,StyleSheet} from 'react-native';
-import React,{useState} from 'react';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LogInScreen from '../screens/Auth/LogInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import useAuth from '../context/auth/useAuth';
-import Entypo from 'react-native-vector-icons/Entypo'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
@@ -39,7 +39,7 @@ const AuthNavigator = () => {
 };
 
 export const MyApp = () => {
-  const {user} = useAuth()
+  const {user} = useAuth();
   return (
     <>
       {user ? (
@@ -48,46 +48,54 @@ export const MyApp = () => {
         </>
       ) : (
         <AuthNavigator />
-      )}</>
-  )
-}
+      )}
+    </>
+  );
+};
 
 const barData = [
-  {id: 1,name: 'home',icon: 'home'},
-  {id: 2,name: 'cart',icon: 'shopping-cart'},
-  {id: 3,name: 'bell',icon: 'bell'},
-  {id: 4,name: 'profile',icon: 'user'},
-]
+  {id: 1, name: 'home', icon: 'home'},
+  {id: 2, name: 'cart', icon: 'shopping-cart'},
+  {id: 3, name: 'bell', icon: 'bell'},
+  {id: 4, name: 'profile', icon: 'user'},
+];
 
 const BottomBarNavigator = () => {
-  const [activeTab,setActiveTab] = useState('home')
+  const [activeTab, setActiveTab] = useState('home');
 
-  const {navigation} = useAuth()
+  const {navigation} = useAuth();
 
-  const handleClick = (value) => {
-    setActiveTab(value)
-    navigation.navigate(value)
-  }
+  const handleClick = value => {
+    setActiveTab(value);
+    navigation.navigate(value);
+  };
   return (
     <View style={styles.container}>
-      {barData.map((item) => {
+      {barData.map(item => {
         return (
           <View key={item.id} style={styles.signleContainer}>
-            {item.name == activeTab ?
+            {item.name == activeTab ? (
               <View style={styles.activeTabContainer}>
-                <View>
-                <FontAwesome name={item.icon} size={18} color='#000' />
+                <View
+                  style={[
+                    styles.activeIconContainer,
+                    item.name === 'profile' ? {paddingHorizontal: 7} : null,
+                  ]}>
+                  <FontAwesome name={item.icon} size={18} color="#FFF" />
                 </View>
                 <Text style={styles.activeText}>{item.name}</Text>
-              </View> :
+              </View>
+            ) : (
               <Pressable onPress={() => handleClick(item.name)}>
-                <FontAwesome name={item.icon} size={24} color='#000' />
-              </Pressable>}</View>
-        )
+                <FontAwesome name={item.icon} size={24} color="#000" />
+              </Pressable>
+            )}
+          </View>
+        );
       })}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -95,29 +103,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingVertical: 15,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    width: '100%'
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    width: '100%',
+    backgroundColor: '#FFF',
   },
   signleContainer: {
-    width: "25%",
-    maxwidth: "25%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '25%',
+    maxwidth: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   activeTabContainer: {
     backgroundColor: '#EEEEEE',
     borderRadius: 40,
-    paddingVertical: 7,
-    paddingRight: 7,
+    paddingVertical: 0,
+    paddingRight: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6
+    gap: 6,
+  },
+  activeIconContainer: {
+    backgroundColor: '#000',
+    borderRadius: 50,
+    padding: 5,
   },
   activeText: {
     textTransform: 'capitalize',
     fontFamily: 'Poppins-Regular',
     color: '#000',
-    fontWeight: 700
+    fontWeight: 700,
   },
-})
+});
