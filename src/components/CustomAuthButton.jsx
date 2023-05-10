@@ -1,12 +1,14 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
 import React from 'react';
 
-const CustomAuthButton = ({buttonText, backColor}) => {
+const CustomAuthButton = ({buttonText, backColor, handleFunc}) => {
   return (
-    <TouchableOpacity
-      style={{...styles.wholeContainer, backgroundColor: backColor}}>
+    <Pressable
+      style={{...styles.wholeContainer, backgroundColor: backColor}}
+      onPress={()=> handleFunc()}
+    >
       <Text style={styles.textStyles}>{buttonText}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -18,10 +20,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 15,
-    marginBottom: 20,
+    paddingVertical: 12,
   },
   textStyles: {
     color: '#FFF',
+    fontFamily: 'Poppins-Regular'
   },
 });

@@ -1,13 +1,14 @@
-import {View, Text} from 'react-native';
+import {View,Text} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LogInScreen from '../screens/Auth/LogInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
+import useAuth from '../context/auth/useAuth';
 
 const Stack = createStackNavigator();
 
-export const VerifiedNavigator = () => {
+const VerifiedNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="home" component={HomeScreen} />
@@ -15,7 +16,7 @@ export const VerifiedNavigator = () => {
   );
 };
 
-export const AuthNavigator = () => {
+const AuthNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="login" component={LogInScreen} />
@@ -23,3 +24,17 @@ export const AuthNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+export const MyApp = () => {
+  const {user} = useAuth()
+  return (
+    <>
+      {user ? (
+        <>
+          <VerifiedNavigator />
+        </>
+      ) : (
+        <AuthNavigator />
+      )}</>
+  )
+}

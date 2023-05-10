@@ -6,7 +6,6 @@ const RouteText = ({textIs, routeText, routeTo}) => {
   const {navigation} = useAuth();
 
   const handleRoute = () => {
-    console.log('banda');
     navigation.navigate(routeTo);
   };
   return (
