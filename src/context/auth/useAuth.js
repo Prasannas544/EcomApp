@@ -19,9 +19,6 @@ export const AuthProvider = ({children}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(false);
@@ -72,11 +69,11 @@ export const AuthProvider = ({children}) => {
   }
 
   const handleLogin= async()=> {
-    let check = handleEmailandPasswordCheck()
-    if(check){
-      alert('Kindly enter details')
-      return
-    }
+    //let check = handleEmailandPasswordCheck()
+    //if(check){
+    //  alert('Kindly enter details')
+    //  return
+    //}
     setLoading(true)
     try {
       await signInWithEmailAndPassword(auth, email, password)

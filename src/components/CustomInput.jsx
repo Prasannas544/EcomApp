@@ -25,7 +25,7 @@ const CustomInput = ({onChangeText,value,labelText,placeholderText,isPassword}) 
           autoCapitalize="none"
           placeholder={placeholderText}
           placeholderTextColor="#959595"
-          secureTextEntry={ showWhichImage === 'eye' ? true : false}
+          secureTextEntry={ showWhichImage === 'eye' ? false : true}
         />
         <View style={{marginRight: 4}}>
           {isPassword ? 

@@ -9,9 +9,7 @@ import GoogleButton from '../../components/GoogleButton';
 import OR from '../../components/OR';
 
 const LogInScreen = () => {
-  const {email,setEmail,password,setPassword,handleLogin, showPassword, setShowPassword} = useAuth();
-
-  console.log('showPassword', showPassword)
+  const {email,setEmail,password,setPassword,handleLogin} = useAuth();
 
   return (
     <SafeAreaView

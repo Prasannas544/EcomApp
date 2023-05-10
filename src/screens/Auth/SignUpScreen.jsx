@@ -9,8 +9,7 @@ import GoogleButton from '../../components/GoogleButton';
 import OR from '../../components/OR';
 
 const SignUpScreen = () => {
-  const {email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, handleNewUser, showPassword, setShowPassword,       showConfirmPassword,
-    setShowConfirmPassword} = useAuth();
+  const {email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, handleNewUser} = useAuth();
   console.log('pass_is', password)
   return (
     <SafeAreaView

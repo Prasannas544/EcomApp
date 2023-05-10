@@ -1,18 +1,31 @@
-import {View,Text} from 'react-native';
-import React from 'react';
+import {View,Text,Pressable,StyleSheet} from 'react-native';
+import React,{useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LogInScreen from '../screens/Auth/LogInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import useAuth from '../context/auth/useAuth';
+import Entypo from 'react-native-vector-icons/Entypo'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import CartScreen from '../screens/CartScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import NotificationScreen from '../screens/NotificationScreen';
+import {managePanProps} from 'react-native-gesture-handler/lib/typescript/handlers/PanGestureHandler';
 
 const Stack = createStackNavigator();
 
 const VerifiedNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="home" component={HomeScreen} />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="home" component={HomeScreen} />
+        <Stack.Screen name="cart" component={CartScreen} />
+        <Stack.Screen name="bell" component={NotificationScreen} />
+        <Stack.Screen name="profile" component={ProfileScreen} />
+      </Stack.Navigator>
+      <BottomBarNavigator />
+    </>
   );
 };
 
@@ -38,3 +51,73 @@ export const MyApp = () => {
       )}</>
   )
 }
+
+const barData = [
+  {id: 1,name: 'home',icon: 'home'},
+  {id: 2,name: 'cart',icon: 'shopping-cart'},
+  {id: 3,name: 'bell',icon: 'bell'},
+  {id: 4,name: 'profile',icon: 'user'},
+]
+
+const BottomBarNavigator = () => {
+  const [activeTab,setActiveTab] = useState('home')
+
+  const {navigation} = useAuth()
+
+  const handleClick = (value) => {
+    setActiveTab(value)
+    navigation.navigate(value)
+  }
+  return (
+    <View style={styles.container}>
+      {barData.map((item) => {
+        return (
+          <View key={item.id} style={styles.signleContainer}>
+            {item.name == activeTab ?
+              <View style={styles.activeTabContainer}>
+                <View>
+                <FontAwesome name={item.icon} size={18} color='#000' />
+                </View>
+                <Text style={styles.activeText}>{item.name}</Text>
+              </View> :
+              <Pressable onPress={() => handleClick(item.name)}>
+                <FontAwesome name={item.icon} size={24} color='#000' />
+              </Pressable>}</View>
+        )
+      })}
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingVertical: 15,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: '100%'
+  },
+  signleContainer: {
+    width: "25%",
+    maxwidth: "25%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  activeTabContainer: {
+    backgroundColor: '#EEEEEE',
+    borderRadius: 40,
+    paddingVertical: 7,
+    paddingRight: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6
+  },
+  activeText: {
+    textTransform: 'capitalize',
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+    fontWeight: 700
+  },
+})
