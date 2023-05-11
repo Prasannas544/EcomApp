@@ -9,6 +9,8 @@ import {
   // signInWithPopup,
 } from "firebase/auth"
 import { auth } from '../../firebase/firebase';
+import {getAllData} from '../../services/dataSlice';
+import {useDispatch} from 'react-redux';
 
 const AuthContext = createContext();
 
@@ -24,6 +26,7 @@ export const AuthProvider = ({children}) => {
   const [loadingInitial, setLoadingInitial] = useState(false);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -62,6 +65,7 @@ export const AuthProvider = ({children}) => {
       await createUserWithEmailAndPassword(auth, email, password)
       console.log('user_created')
       setLoading(false)
+      await dispatch(getAllData(0))
     } catch (err) {
       setError(err)
       setLoading(false)
@@ -78,6 +82,7 @@ export const AuthProvider = ({children}) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       setLoading(false)
+      await dispatch(getAllData())
     } catch (err) {
       setError(null)
       setError(err)

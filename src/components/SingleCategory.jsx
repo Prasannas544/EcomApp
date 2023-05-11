@@ -1,15 +1,17 @@
-import {View,Text,StyleSheet,Image} from 'react-native'
+import {View,Text,StyleSheet,Image, Pressable} from 'react-native'
 import React from 'react'
+import useAuth from '../context/auth/useAuth'
 
 const SingleCategory = ({headerText,quantity,image,direction}) => {
+    const {navigation} = useAuth()
     return (
-        <View style={[styles.wholeContainer,{flexDirection: direction}]}>
+        <Pressable style={[styles.wholeContainer,{flexDirection: direction}]} onPress={()=> navigation.navigate('category') }>
             <View>
                 <Text style={styles.headerText}>{headerText}</Text>
                 <Text style={styles.quantity}>{quantity} Product</Text>
             </View>
             <Image source={image} resizeMode='cover' style={styles.imageStyles} />
-        </View>
+        </Pressable>
     )
 }
 
