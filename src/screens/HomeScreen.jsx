@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10
+    gap: 10,
+    marginBottom: 20
   },
   textInputStyle: {
     height: '100%',

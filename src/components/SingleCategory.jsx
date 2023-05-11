@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         maxHeight: 100,
         //paddingVertical: 20,
-        marginVertical: 10,
+        marginBottom: 40,
         borderRadius: 30
     },
     headerText: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     imageStyles: {
         width: 150,
         height: 100,
-        mixBlendMode: 'color-burn',
+        
         borderRadius: 30
     }
 })
