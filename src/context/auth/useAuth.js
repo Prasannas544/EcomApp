@@ -14,9 +14,9 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(false);
-  //const [email, setEmail] = useState('mishratapas769@gmail.com');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('mishratapas769@gmail.com');
+  //const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('123456');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [loading, setLoading] = useState(false);

@@ -19,7 +19,7 @@ const CustomInput = ({onChangeText,value,labelText,placeholderText,isPassword}) 
       <View style={styles.inputandIcon}>
         <TextInput
           onChangeText={onChangeText}
-          //value={value}
+          value={value}
           style={styles.textInput}
           keyboardType={isPassword ? 'default' : 'email-address'}
           autoCapitalize="none"
