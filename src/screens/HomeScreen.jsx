@@ -5,23 +5,19 @@ import Header from '../components/Header';
 import Feather from 'react-native-vector-icons/Feather'
 import SingleCategory from '../components/SingleCategory';
 import new_arrials from '../assets/new-arrivals.jpg'
-import {useDispatch, useSelector} from 'react-redux';
-import {getAllData} from '../services/dataSlice';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const HomeScreen = () => {
   const {handleLogout} = useAuth()
-  const {items} = useSelector(state=> state.data)
-
-  const dispatch = useDispatch()
-
-  useEffect(()=> {
-    dispatch(getAllData())
-  }, [dispatch])
 
   return (
     <ScrollView style={styles.wholeContainer}>
       <StatusBar animated={true} backgroundColor={'#FFF'} barStyle={'dark-content'} />
-      <Header />
+      {/*<Header />*/}
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10}}>
+        <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 26 }}>Welcome!</Text>
+        <FontAwesome name='user' size={36} color='#000' />
+      </View>
       <View style={styles.searchContainer}>
         <Feather name='search' size={26} color='#000' />
         <TextInput placeholder='Search items here' style={styles.textInputStyle} placeholderTextColor={'#ADADAD'} />
@@ -48,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     paddingHorizontal: 14,
     paddingVertical: 4,
-    borderRadius: 40,
+    borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,

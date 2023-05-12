@@ -1,11 +1,26 @@
-import {View,Text,SafeAreaView,StatusBar,StyleSheet,FlatList,Image, ScrollView} from 'react-native'
-import React from 'react'
+import {View,Text,SafeAreaView,StatusBar,StyleSheet,FlatList,Image, Pressable} from 'react-native'
+import React, {useState ,useEffect} from 'react'
 import Header from '../components/Header'
-import {useSelector} from 'react-redux'
-import {} from 'react-native-gesture-handler'
+import {useDispatch, useSelector} from 'react-redux'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import {getProductDetail} from '../services/dataSlice'
+import useAuth from '../context/auth/useAuth'
 
-const CategoryScreen = (props,route) => {
-  const {categoryItems} = useSelector((state) => state.data)
+const CategoryScreen = (props) => {
+  const [dataToShow, setDataToShow] = useState([])
+  const [added, setAdded] = useState(false)
+
+  const {allItems, categoryItems} = useSelector((state)=> state.data)
+  const {navigation, dispatch} = useAuth()
+
+
+  useEffect(()=> {
+    if(props.route.params.category_name === 'all'){
+      setDataToShow(allItems)
+    } else {
+      setDataToShow(categoryItems)
+    }
+  }, [])
 
   const handleItemTitle = (str) => {
 
@@ -23,9 +38,25 @@ const CategoryScreen = (props,route) => {
     return result
   }
 
+  const handleFav=()=> {
+  setAdded(!added)
+  }
+
+  const handleGoingToDetailPage=(id)=> {
+
+    navigation.navigate('productDetail', {productID: id})
+  }
+
   const SingleContainer = ({item}) => {
     return (
-      <View style={styles.singleWholeContainer}>
+      <Pressable style={styles.singleWholeContainer} onPress={()=> handleGoingToDetailPage(item.id)}>
+        <Pressable style={styles.heartContainer} onPress={handleFav}>
+        {added ? 
+          <AntDesign name='heart' size={22} color='#ff0000' /> 
+          : 
+          <AntDesign name='hearto' size={22} color='#000' />
+        }  
+        </Pressable>
         <View style={styles.imageContainer}>
           <Image source={{uri: item.image}} style={{width: 120,height: 100}} resizeMode='contain' />
         </View>
@@ -34,30 +65,29 @@ const CategoryScreen = (props,route) => {
           <Text style={styles.categoryStyle}>{item.category}</Text>
           <Text style={[styles.titlText, {fontSize: 18}]}>₹{item.price}</Text>
         </View>
-      </View>
+      </Pressable>
     )
   }
 
-  console.log('categoryItems',categoryItems)
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#E5E5E5'}}>
-    <SafeAreaView style={styles.wholeContainer}>
+      <SafeAreaView style={styles.wholeContainer}>
       <StatusBar animated={true} backgroundColor={'#E5E5E5'} barStyle={'dark-content'} />
       <Header goBack={props.canGoBack} />
-      <Text>{'Category name'}</Text>
+      <Text style={styles.categoryTextStyle}>{props.route.params.category_name}</Text>
       <View>
         <FlatList
-          data={categoryItems}
+          data={dataToShow}
           renderItem={({item}) => <SingleContainer item={item} />}
           keyExtractor={item => item.id}
           numColumns={2}
           vertical
+          style={{height: '90%'}}
+          scrollEnabled={true}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}
         />
       </View>
     </SafeAreaView>
-    </ScrollView>
   )
 }
 
@@ -65,9 +95,14 @@ export default CategoryScreen
 
 const styles = StyleSheet.create({
   wholeContainer: {
-    flex: 1,
-    //backgroundColor: '#E5E5E5',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    position: 'relative',
+    paddingBottom: 100
+  },
+  heartContainer: {
+    position: 'absolute',
+    top: 5,
+    right: 5
   },
   singleWholeContainer: {
     flex: 1,
@@ -78,7 +113,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
     paddingVertical: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    marginBottom: 20
+  },
+  categoryTextStyle: {
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
+    fontSize: 22
   },
   imageContainer: {
     borderRadius: 20,

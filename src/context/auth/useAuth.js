@@ -9,7 +9,6 @@ import {
   // signInWithPopup,
 } from "firebase/auth"
 import { auth } from '../../firebase/firebase';
-import {getAllData} from '../../services/dataSlice';
 import {useDispatch} from 'react-redux';
 
 const AuthContext = createContext();
@@ -63,7 +62,6 @@ export const AuthProvider = ({children}) => {
     setLoading(true)
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-      console.log('user_created')
       setLoading(false)
       //dispatch(getAllData())
     } catch (err) {

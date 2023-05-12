@@ -20,16 +20,15 @@ export const getAllData = createAsyncThunk("data/getAllData", async () => {
     }
   })
   
-  export const getDetail = createAsyncThunk("detail/getDetail", async (id) => {
+  export const getProductDetail = createAsyncThunk("detail/getProductDetail", async (id) => {
     try {
       const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
+      //console.log('url_is', `https://fakestoreapi.com/products/${id}`)
       return response.data;
     } catch (err) {
       console.log(err);
     }
   });
-
-//const initialState={loading: false, items: null, error: null, details: null}
 
 const dataSlice = createSlice({
     name: 'data',
@@ -38,7 +37,7 @@ const dataSlice = createSlice({
       allItems: null,
       categoryItems: null,
       error: null,
-      singleDetails: null
+      singleItemDetail: null
     },
     extraReducers: (builder)=> {
         builder.addCase(getAllData.pending, (state)=> {
@@ -47,7 +46,7 @@ const dataSlice = createSlice({
         }),
         builder.addCase(getAllData.fulfilled, (state, action)=> {
           state.loading = false
-            state.items = action.payload
+            state.allItems = action.payload
             state.error = null
         }),
         builder.addCase(getAllData.rejected, (state, action)=> {
@@ -67,16 +66,16 @@ const dataSlice = createSlice({
           state.loading=false
           state.error = action.error.message
       }),
-        builder.addCase(getDetail.pending, (state)=> {
+        builder.addCase(getProductDetail.pending, (state)=> {
             state.loading = true;
             state.error = null;
         }),
-        builder.addCase(getDetail.fulfilled, (state, action)=> {
-            state.details = action.payload;
-            state.loading = false;
+        builder.addCase(getProductDetail.fulfilled, (state, action)=> {
+          state.loading = false;
+            state.singleItemDetail = action.payload;
             state.error = null
         })
-        builder.addCase(getDetail.rejected, (state, action)=> {
+        builder.addCase(getProductDetail.rejected, (state, action)=> {
             state.loading = false;
             state.error = action.error.message
         })

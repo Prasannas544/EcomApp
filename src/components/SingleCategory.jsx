@@ -2,21 +2,20 @@ import {View,Text,StyleSheet,Image, Pressable} from 'react-native'
 import React, {useEffect} from 'react'
 import useAuth from '../context/auth/useAuth'
 import {useDispatch, useSelector} from 'react-redux'
-import {getCategoryData} from '../services/dataSlice'
+import {getAllData, getCategoryData} from '../services/dataSlice'
 
 const SingleCategory = ({headerText,quantity,image,direction, dataFor}) => {
     const {navigation} = useAuth()
     const dispatch = useDispatch()
 
-    const {allItems, categoryItems} = useSelector((state)=> state.data)
-
     const handleClick= async ()=> {
 
         if(dataFor == 'all'){
-            navigation.navigate('category', allItems)
+            await dispatch(getAllData())
+            navigation.navigate('category', {category_name: dataFor})
         } else {
             await dispatch(getCategoryData(dataFor))
-            navigation.navigate('category', {arrayData: dataFor})
+            navigation.navigate('category', {category_name: dataFor})
         }
     }
     
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
         maxHeight: 100,
         //paddingVertical: 20,
         marginBottom: 40,
-        borderRadius: 30
+        borderRadius: 16
     },
     headerText: {
         color: '#000',

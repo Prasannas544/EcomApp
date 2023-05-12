@@ -13,6 +13,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import {managePanProps} from 'react-native-gesture-handler/lib/typescript/handlers/PanGestureHandler';
 import CategoryScreen from '../screens/CategoryScreen';
+import ProductDetail from '../screens/ProductDetail/ProductDetail';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const VerifiedNavigator = () => {
         <Stack.Screen name="bell" component={NotificationScreen} />
         <Stack.Screen name="profile" component={ProfileScreen} />
         <Stack.Screen name="category" component={CategoryScreen} />
+        <Stack.Screen name="productDetail" component={ProductDetail} />
       </Stack.Navigator>
       <BottomBarNavigator />
     </>
