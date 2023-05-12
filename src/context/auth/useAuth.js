@@ -65,7 +65,7 @@ export const AuthProvider = ({children}) => {
       await createUserWithEmailAndPassword(auth, email, password)
       console.log('user_created')
       setLoading(false)
-      await dispatch(getAllData(0))
+      //dispatch(getAllData())
     } catch (err) {
       setError(err)
       setLoading(false)
@@ -73,23 +73,16 @@ export const AuthProvider = ({children}) => {
   }
 
   const handleLogin= async()=> {
-    //let check = handleEmailandPasswordCheck()
-    //if(check){
-    //  alert('Kindly enter details')
-    //  return
-    //}
     setLoading(true)
     try {
       await signInWithEmailAndPassword(auth, email, password)
       setLoading(false)
-      await dispatch(getAllData())
+      //dispatch(getAllData())
     } catch (err) {
       setError(null)
       setError(err)
       setLoading(false)
-      console.log('error_is', error)
     }
-    console.log('user_is', user)
   }
 
   const handleLogout= async()=> {
@@ -110,7 +103,9 @@ export const AuthProvider = ({children}) => {
     () => ({
       user,
       setUser,
+      loading,
       navigation,
+      dispatch,
       email,
       setEmail,
       confirmPassword,

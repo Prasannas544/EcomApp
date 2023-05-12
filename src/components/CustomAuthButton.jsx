@@ -1,13 +1,15 @@
-import {View, Text, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator} from 'react-native';
 import React from 'react';
+import useAuth from '../context/auth/useAuth';
 
 const CustomAuthButton = ({buttonText, backColor, handleFunc}) => {
+  const {loading}  = useAuth()
   return (
     <Pressable
       style={{...styles.wholeContainer, backgroundColor: backColor}}
       onPress={()=> handleFunc()}
     >
-      <Text style={styles.textStyles}>{buttonText}</Text>
+     {loading ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.textStyles}>{buttonText}</Text> }
     </Pressable>
   );
 };

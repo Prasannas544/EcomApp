@@ -1,14 +1,22 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
+import {CommonActions, useNavigation} from "@react-navigation/native"
+import {useDispatch} from 'react-redux'
 
 const Header = () => {
+  const navigation = useNavigation()
+
+  const handleGoBack = () => {
+    navigation.dispatch(CommonActions.goBack())
+  }
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={()=> handleGoBack() }>
         <View style={styles.imageContainer}>
       <Image source={require('../assets/back_vector.png')} style={styles.imageStyles} />
       </View>
       <View><Text>Hello</Text></View>
-    </View>
+    </Pressable>
   )
 }
 

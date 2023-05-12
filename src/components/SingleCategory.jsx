@@ -1,11 +1,30 @@
 import {View,Text,StyleSheet,Image, Pressable} from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import useAuth from '../context/auth/useAuth'
+import {useDispatch, useSelector} from 'react-redux'
+import {getCategoryData} from '../services/dataSlice'
 
-const SingleCategory = ({headerText,quantity,image,direction}) => {
+const SingleCategory = ({headerText,quantity,image,direction, dataFor}) => {
     const {navigation} = useAuth()
+    const dispatch = useDispatch()
+
+    const {allItems, categoryItems} = useSelector((state)=> state.data)
+
+    const handleClick= async ()=> {
+
+        if(dataFor == 'all'){
+            navigation.navigate('category', allItems)
+        } else {
+            await dispatch(getCategoryData(dataFor))
+            navigation.navigate('category', {arrayData: dataFor})
+        }
+    }
+    
     return (
-        <Pressable style={[styles.wholeContainer,{flexDirection: direction}]} onPress={()=> navigation.navigate('category') }>
+        <Pressable 
+            style={[styles.wholeContainer,{flexDirection: direction}]}
+            onPress={handleClick}
+        >
             <View>
                 <Text style={styles.headerText}>{headerText}</Text>
                 <Text style={styles.quantity}>{quantity} Product</Text>
