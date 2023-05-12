@@ -18,8 +18,8 @@ const ProductDetail = (props) => {
   const width = Dimensions.get('window').width;
   //let image = singleItemDetail.image || '';
 
-  useEffect( async ()=> {
-    await dispatch(getProductDetail(id))
+  useEffect(()=> {
+     dispatch(getProductDetail(id))
   }, [])
 
   return (
@@ -32,27 +32,8 @@ const ProductDetail = (props) => {
         <View style={styles.imageAndHeaderContainer}>
         <Header />
         <View style={styles.carouselContainer}>
-          <Carousel
-            loop
-            width={width}
-            height={width / 2}
-            autoPlay={true}
-            data={[jsonDATA]}
-            scrollAnimationDuration={1000}
-            onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({ index }) => (
-              <View
-                  style={{
-                      flex: 1,
-                      borderWidth: 1,
-                      justifyContent: 'center',
-                  }}
-              >
-                  <Text style={{color: '#000'}}>{index.name}</Text>
-              </View>
-          )}
-          />
-          {/*<CustomCarousel image={image} count={3} />*/}
+          <Image source={{uri: singleItemDetail.image}} style={{width: 250, height: 150, resizeMode: 'contain'}} /> 
+          {singleItemDetail && <Text>{singleItemDetail.title}</Text>}
         </View>
         </View>
         </ScrollView>
