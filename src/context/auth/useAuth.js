@@ -7,8 +7,8 @@ import {
   onAuthStateChanged,
   // GoogleAuthProvider,
   // signInWithPopup,
-} from "firebase/auth"
-import { auth } from '../../firebase/firebase';
+} from 'firebase/auth';
+import {auth} from '../../firebase/firebase';
 import {useDispatch} from 'react-redux';
 
 const AuthContext = createContext();
@@ -25,77 +25,77 @@ export const AuthProvider = ({children}) => {
   const [loadingInitial, setLoadingInitial] = useState(false);
 
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const showBottomBarNavigation = true;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
-        setUser(currentUser)
+        setUser(currentUser);
       } else {
-        setUser("")
+        setUser('');
       }
-    })
+    });
     return () => {
-      unsubscribe()
-    }
-  }, [])
+      unsubscribe();
+    };
+  }, []);
 
-  const handleEmailandPasswordCheck=()=> {
-    if(email.length == 0 && password.length == 0){
-      return true
+  const handleEmailandPasswordCheck = () => {
+    if (email.length == 0 && password.length == 0) {
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
-  const handleNewUser= async()=> {
-
-    let check = handleEmailandPasswordCheck()
-    if(check){
-      alert('Kindly enter details')
-      return
+  const handleNewUser = async () => {
+    let check = handleEmailandPasswordCheck();
+    if (check) {
+      alert('Kindly enter details');
+      return;
     }
 
-    if(password !== confirmPassword){
-      alert('Password does not match')
-      return
+    if (password !== confirmPassword) {
+      alert('Password does not match');
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      setLoading(false)
+      await createUserWithEmailAndPassword(auth, email, password);
+      setLoading(false);
       //dispatch(getAllData())
     } catch (err) {
-      setError(err)
-      setLoading(false)
+      setError(err);
+      setLoading(false);
     }
-  }
+  };
 
-  const handleLogin= async()=> {
-    setLoading(true)
+  const handleLogin = async () => {
+    setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      setLoading(false)
+      await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
       //dispatch(getAllData())
     } catch (err) {
-      setError(null)
-      setError(err)
-      setLoading(false)
+      setError(null);
+      setError(err);
+      setLoading(false);
     }
-  }
+  };
 
-  const handleLogout= async()=> {
+  const handleLogout = async () => {
     try {
-      setLoading(true)
-      await signOut(auth)
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
-      setLoading(false)
-      navigation.replace("login")
+      setLoading(true);
+      await signOut(auth);
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setLoading(false);
+      navigation.replace('login');
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const memoedValue = useMemo(
     () => ({
@@ -114,6 +114,7 @@ export const AuthProvider = ({children}) => {
       handleLogin,
       handleLogout,
       handleEmailandPasswordCheck,
+      showBottomBarNavigation,
     }),
     [user, loading, error],
   );

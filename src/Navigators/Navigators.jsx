@@ -5,30 +5,30 @@ import LogInScreen from '../screens/Auth/LogInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import useAuth from '../context/auth/useAuth';
-import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
-import {managePanProps} from 'react-native-gesture-handler/lib/typescript/handlers/PanGestureHandler';
 import CategoryScreen from '../screens/CategoryScreen';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
+import useSecondary from '../context/secondary/useSecondary';
 
 const Stack = createStackNavigator();
 
 const VerifiedNavigator = () => {
   return (
     <>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="home" component={HomeScreen} />
-        <Stack.Screen name="cart" component={CartScreen} />
-        <Stack.Screen name="bell" component={NotificationScreen} />
-        <Stack.Screen name="profile" component={ProfileScreen} />
-        <Stack.Screen name="category" component={CategoryScreen} />
-        <Stack.Screen name="productDetail" component={ProductDetail} />
-      </Stack.Navigator>
-      <BottomBarNavigator />
+      <>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="home" component={HomeScreen} />
+          <Stack.Screen name="cart" component={CartScreen} />
+          <Stack.Screen name="bell" component={NotificationScreen} />
+          <Stack.Screen name="profile" component={ProfileScreen} />
+          <Stack.Screen name="category" component={CategoryScreen} />
+          <Stack.Screen name="productDetail" component={ProductDetail} />
+        </Stack.Navigator>
+        {/* <BottomBarNavigator /> */}
+      </>
     </>
   );
 };
@@ -64,10 +64,10 @@ const barData = [
   {id: 4, name: 'profile', icon: 'user'},
 ];
 
-const BottomBarNavigator = () => {
+export const BottomBarNavigator = () => {
   const [activeTab, setActiveTab] = useState('home');
 
-  const {navigation} = useAuth();
+  const {navigation} = useSecondary();
 
   const handleClick = value => {
     setActiveTab(value);
@@ -107,11 +107,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingVertical: 15,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
     width: '100%',
     backgroundColor: '#FFF',
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
   signleContainer: {
     width: '25%',
