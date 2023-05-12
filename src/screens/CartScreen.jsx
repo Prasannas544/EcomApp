@@ -6,16 +6,9 @@ import useAuth from '../context/auth/useAuth';
 const CartScreen = () => {
   const {showBottomBarNavigation} = useAuth();
   return (
-    <>
-      <ScrollView style={styles.wholeContainer}>
-        <Text>CartScreen</Text>
-      </ScrollView>
-      {showBottomBarNavigation ? (
-        <View style={{position: 'absolute', bottom: 0}}>
-          <BottomBarNavigator />
-        </View>
-      ) : null}
-    </>
+    <ScrollView style={styles.wholeContainer}>
+      <Text>CartScreen</Text>
+    </ScrollView>
   );
 };
 

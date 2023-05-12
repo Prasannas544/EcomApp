@@ -27,7 +27,7 @@ const VerifiedNavigator = () => {
           <Stack.Screen name="category" component={CategoryScreen} />
           <Stack.Screen name="productDetail" component={ProductDetail} />
         </Stack.Navigator>
-        {/* <BottomBarNavigator /> */}
+        <BottomBarNavigator />
       </>
     </>
   );
@@ -67,7 +67,7 @@ const barData = [
 export const BottomBarNavigator = () => {
   const [activeTab, setActiveTab] = useState('home');
 
-  const {navigation} = useSecondary();
+  const {navigation} = useAuth();
 
   const handleClick = value => {
     setActiveTab(value);
