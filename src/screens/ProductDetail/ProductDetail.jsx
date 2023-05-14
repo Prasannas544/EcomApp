@@ -14,6 +14,7 @@ import useAuth from '../../context/auth/useAuth';
 import {getProductDetail} from '../../services/dataSlice';
 import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
+import Toast from 'react-native-toast-message';
 
 const ProductDetail = props => {
   const {loading, singleItemDetail} = useSelector(state => state.data);
@@ -21,13 +22,19 @@ const ProductDetail = props => {
   const {dispatch} = useAuth();
 
   let id = props.route.params.productID;
-  console.log('id_is', id);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
   }, []);
 
-  console.log('singleItemDetail', singleItemDetail);
+  const handleAddToCart = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is a success toast',
+      visibilityTime: 2000, // Duration to show the toast in milliseconds (optional)
+    });
+  };
 
   return (
     <>
@@ -60,7 +67,9 @@ const ProductDetail = props => {
           </ScrollView>
           <View style={styles.bottomContainer}>
             <Text style={styles.priceContainer}>₹69</Text>
-            <Pressable style={styles.addToCart}>
+            <Pressable
+              style={styles.addToCart}
+              onPress={() => handleAddToCart()}>
               <Feather name="shopping-cart" size={16} color="#000" />
               <Text style={styles.addToCartText}> Add to Cart</Text>
             </Pressable>

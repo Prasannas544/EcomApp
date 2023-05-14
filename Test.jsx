@@ -6,6 +6,7 @@ import {SecondaryProvider} from './src/context/secondary/useSecondary';
 import {Provider} from 'react-redux';
 import store from './src/services/store';
 import {AuthProvider} from './src/context/auth/useAuth';
+import Toast from 'react-native-toast-message';
 
 const Test = () => {
   return (
@@ -14,6 +15,7 @@ const Test = () => {
         <AuthProvider>
           <SecondaryProvider>
             <MyApp />
+            <Toast ref={ref => Toast.setRef(ref)} />
           </SecondaryProvider>
         </AuthProvider>
       </Provider>
