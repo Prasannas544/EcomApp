@@ -66,6 +66,7 @@ const ProductDetail = props => {
             </View>
           </ScrollView>
           <View style={styles.bottomContainer}>
+            {/* <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text> */}
             <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
             <Pressable
               style={styles.addToCart}
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   imageAndHeaderContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   carouselContainer: {
     alignItems: 'center',
