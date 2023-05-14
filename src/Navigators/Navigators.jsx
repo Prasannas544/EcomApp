@@ -11,25 +11,30 @@ import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
-import useSecondary from '../context/secondary/useSecondary';
 
 const Stack = createStackNavigator();
 
 const VerifiedNavigator = () => {
   return (
     <>
-      <>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="home" component={HomeScreen} />
-          <Stack.Screen name="cart" component={CartScreen} />
-          <Stack.Screen name="bell" component={NotificationScreen} />
-          <Stack.Screen name="profile" component={ProfileScreen} />
-          <Stack.Screen name="category" component={CategoryScreen} />
-          <Stack.Screen name="productDetail" component={ProductDetail} />
-        </Stack.Navigator>
-        <BottomBarNavigator />
-      </>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="home" component={HomeScreen} />
+        <Stack.Screen name="cart" component={CartScreen} />
+        <Stack.Screen name="bell" component={NotificationScreen} />
+        <Stack.Screen name="profile" component={ProfileScreen} />
+        <Stack.Screen name="category" component={CategoryScreen} />
+      </Stack.Navigator>
+      <BottomBarNavigator />
     </>
+  );
+};
+
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="verified" component={VerifiedNavigator} />
+      <Stack.Screen name="productDetail" component={ProductDetail} />
+    </Stack.Navigator>
   );
 };
 
@@ -48,7 +53,7 @@ export const MyApp = () => {
     <>
       {user ? (
         <>
-          <VerifiedNavigator />
+          <MainNavigator />
         </>
       ) : (
         <AuthNavigator />
