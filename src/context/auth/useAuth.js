@@ -16,9 +16,9 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(false);
-  const [email, setEmail] = useState('mishratapas769@gmail.com');
+  const [email, setEmail] = useState('');
   //const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('123456');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -62,14 +62,14 @@ export const AuthProvider = ({children}) => {
     }
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      const response = await AsyncStorage.setItem(
-        'userToken',
-        response._tokenResponse.localId,
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
       );
-      console.log('response', response);
+      await AsyncStorage.setItem('userToken', response._tokenResponse.localId);
       setLoading(false);
-      //dispatch(getAllData())
+      setUser(true);
     } catch (err) {
       setError(err);
       setLoading(false);
@@ -80,8 +80,10 @@ export const AuthProvider = ({children}) => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
+      console.log('check_here', response);
       await AsyncStorage.setItem('userToken', response._tokenResponse.localId);
       setLoading(false);
+      setUser(true);
     } catch (err) {
       setError(null);
       setError(err);
@@ -93,6 +95,7 @@ export const AuthProvider = ({children}) => {
     try {
       setLoading(true);
       await signOut(auth);
+      await AsyncStorage.removeItem('userToken');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -122,7 +125,7 @@ export const AuthProvider = ({children}) => {
       handleEmailandPasswordCheck,
       showBottomBarNavigation,
     }),
-    [user, loading, error],
+    [user, loading, error, email],
   );
 
   return (

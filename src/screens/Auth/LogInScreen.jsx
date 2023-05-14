@@ -1,4 +1,4 @@
-import {View,Text,SafeAreaView,StatusBar} from 'react-native';
+import {View, Text, SafeAreaView, StatusBar} from 'react-native';
 import React from 'react';
 import AuthHeader from '../../components/AuthHeader';
 import CustomInput from '../../components/CustomInput';
@@ -9,11 +9,11 @@ import GoogleButton from '../../components/GoogleButton';
 import OR from '../../components/OR';
 
 const LogInScreen = () => {
-  const {email,setEmail,password,setPassword,handleLogin} = useAuth();
+  const {email, setEmail, password, setPassword, handleLogin} = useAuth();
 
   return (
     <SafeAreaView
-      style={{flex: 1,paddingHorizontal: 20,backgroundColor: '#FFF'}}>
+      style={{flex: 1, paddingHorizontal: 20, backgroundColor: '#FFF'}}>
       <View>
         <AuthHeader
           headerText="Welcome!"
@@ -36,7 +36,11 @@ const LogInScreen = () => {
           isPassword={true}
         />
         <View>
-          <CustomAuthButton buttonText="Login" backColor="#000" handleFunc={handleLogin} />
+          <CustomAuthButton
+            buttonText="Login"
+            backColor="#000"
+            handleFunc={handleLogin}
+          />
           <OR />
           <GoogleButton />
         </View>

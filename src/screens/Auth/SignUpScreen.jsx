@@ -9,8 +9,16 @@ import GoogleButton from '../../components/GoogleButton';
 import OR from '../../components/OR';
 
 const SignUpScreen = () => {
-  const {email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, handleNewUser} = useAuth();
-  console.log('pass_is', password)
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    handleNewUser,
+  } = useAuth();
+
   return (
     <SafeAreaView
       style={{flex: 1, paddingHorizontal: 20, backgroundColor: '#FFF'}}>
@@ -32,7 +40,7 @@ const SignUpScreen = () => {
           value={password}
           isPassword={true}
         />
-          <CustomInput
+        <CustomInput
           labelText="confirm password"
           placeholderText="enter password"
           onChangeText={text => setConfirmPassword(text)}
@@ -40,7 +48,11 @@ const SignUpScreen = () => {
           isPassword={true}
         />
         <View>
-          <CustomAuthButton  buttonText="Sign up" backColor="#000" handleFunc={handleNewUser} />
+          <CustomAuthButton
+            buttonText="Sign up"
+            backColor="#000"
+            handleFunc={handleNewUser}
+          />
           {/*<GoogleButton />*/}
           <OR />
           <GoogleButton />

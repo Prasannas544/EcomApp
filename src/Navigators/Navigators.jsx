@@ -1,5 +1,5 @@
 import {View, Text, Pressable, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LogInScreen from '../screens/Auth/LogInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
@@ -11,6 +11,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -48,7 +49,29 @@ const AuthNavigator = () => {
 };
 
 export const MyApp = () => {
-  const {user} = useAuth();
+  const {user, setUser} = useAuth();
+
+  const checkUserLoggedIn = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (userToken) {
+        return true;
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      const statusIs = await checkUserLoggedIn();
+      console.log('here_is', statusIs);
+      setUser(statusIs);
+    };
+    checkStatus();
+  }, []);
+
   return (
     <>
       {user ? (
