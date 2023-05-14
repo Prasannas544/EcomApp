@@ -66,7 +66,7 @@ const ProductDetail = props => {
             </View>
           </ScrollView>
           <View style={styles.bottomContainer}>
-            <Text style={styles.priceContainer}>₹69</Text>
+            <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
             <Pressable
               style={styles.addToCart}
               onPress={() => handleAddToCart()}>
