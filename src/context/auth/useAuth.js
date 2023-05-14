@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import {auth} from '../../firebase/firebase';
 import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext();
 
@@ -49,11 +50,11 @@ export const AuthProvider = ({children}) => {
   };
 
   const handleNewUser = async () => {
-    let check = handleEmailandPasswordCheck();
-    if (check) {
-      alert('Kindly enter details');
-      return;
-    }
+    // let check = handleEmailandPasswordCheck();
+    // if (check) {
+    //   alert('Kindly enter details');
+    //   return;
+    // }
 
     if (password !== confirmPassword) {
       alert('Password does not match');
@@ -62,6 +63,11 @@ export const AuthProvider = ({children}) => {
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      const response = await AsyncStorage.setItem(
+        'userToken',
+        response._tokenResponse.localId,
+      );
+      console.log('response', response);
       setLoading(false);
       //dispatch(getAllData())
     } catch (err) {
@@ -73,9 +79,9 @@ export const AuthProvider = ({children}) => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      await AsyncStorage.setItem('userToken', response._tokenResponse.localId);
       setLoading(false);
-      //dispatch(getAllData())
     } catch (err) {
       setError(null);
       setError(err);
