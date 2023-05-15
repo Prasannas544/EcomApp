@@ -12,6 +12,8 @@ import NotificationScreen from '../screens/NotificationScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getCartItemsFromLocal, subTotal} from '../services/cartSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Stack = createStackNavigator();
 
@@ -49,7 +51,8 @@ const AuthNavigator = () => {
 };
 
 export const MyApp = () => {
-  const {user, setUser} = useAuth();
+  const {user, setUser, dispatch} = useAuth();
+  const cart = useSelector((state)=> state.cart)
 
   const checkUserLoggedIn = async () => {
     try {
@@ -66,7 +69,6 @@ export const MyApp = () => {
   useEffect(() => {
     const checkStatus = async () => {
       const statusIs = await checkUserLoggedIn();
-      console.log('here_is', statusIs);
       setUser(statusIs);
     };
     checkStatus();
@@ -94,18 +96,24 @@ const barData = [
 
 export const BottomBarNavigator = () => {
   const [activeTab, setActiveTab] = useState('home');
-
   const {navigation} = useAuth();
+  const cart = useSelector((state)=> state.cart)
+  const dispatch = useDispatch()
 
   const handleClick = value => {
     setActiveTab(value);
     navigation.navigate(value);
   };
+
+    useEffect(()=> {
+    dispatch(subTotal())
+  }, [dispatch, cart])
+
   return (
     <View style={styles.container}>
       {barData.map(item => {
         return (
-          <View key={item.id} style={styles.signleContainer}>
+          <View key={item.id} style={styles.singleContainer}>
             {item.name == activeTab ? (
               <View style={styles.activeTabContainer}>
                 <View
@@ -118,9 +126,12 @@ export const BottomBarNavigator = () => {
                 <Text style={styles.activeText}>{item.name}</Text>
               </View>
             ) : (
-              <Pressable onPress={() => handleClick(item.name)}>
-                <FontAwesome name={item.icon} size={24} color="#000" />
-              </Pressable>
+                <Pressable onPress={() => handleClick(item.name)} style={{position: 'relative'}}>
+                    {item.name === 'cart' ? <View style={styles.cartQuantityContainer}>
+                      <Text style={styles.cartQunatityLengthText}>{cart.cartTotalQuantity}</Text>
+                    </View> : null}
+                    <FontAwesome name={item.icon} size={24} color="#000" /> 
+                </Pressable>
             )}
           </View>
         );
@@ -135,13 +146,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingVertical: 15,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
     width: '100%',
     backgroundColor: '#FFF',
     paddingHorizontal: 10,
   },
-  signleContainer: {
+  singleContainer: {
     width: '25%',
     maxwidth: '25%',
     alignItems: 'center',
@@ -167,4 +176,19 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 700,
   },
+  cartQuantityContainer: {
+    width: 18,
+    height: 18,
+    position: 'absolute',
+    top: -10,
+    right: -10,
+    backgroundColor: '#000',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartQunatityLengthText: {
+    color: 'gold',
+    fontFamily: 'Poppins-Regular'
+  }
 });

@@ -9,7 +9,7 @@ import {
   Pressable,
   Platform
 } from 'react-native';
-import React,{useState, useEffect} from 'react';
+import React,{useState,useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import useAuth from '../../context/auth/useAuth';
 import {getProductDetail,removeDetail} from '../../services/dataSlice';
@@ -17,9 +17,10 @@ import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import {addToCart} from '../../services/cartSlice';
 
 const ProductDetail = props => {
-  const [quantity, setQuantity] = useState(0)
+  const [quantity,setQuantity] = useState(0)
   const {loading,singleItemDetail} = useSelector(state => state.data);
 
   const {dispatch} = useAuth();
@@ -35,13 +36,8 @@ const ProductDetail = props => {
 
   },[dispatch]);
 
-  const handleAddToCart = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Hello',
-      text2: 'This is a success toast',
-      visibilityTime: 2000, // Duration to show the toast in milliseconds (optional)
-    });
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
   };
 
   const handleItemTitle = str => {
@@ -63,7 +59,7 @@ const ProductDetail = props => {
     const stars = [];
 
     // Render full stars
-    for (let i = 1; i <= 5; i++) {
+    for(let i = 1; i <= 5; i++) {
       const starIcon = i <= rating ? 'star' : 'star-o';
       stars.push(
         <FontAwesome
@@ -109,19 +105,30 @@ const ProductDetail = props => {
               <View style={styles.productDetailContainer}>
                 <View style={styles.titleAndQuantityContainer}>
                   <View>
-                  <Text style={styles.titleTextStyles}>{handleItemTitle(singleItemDetail.title)}</Text>
-                  <Text style={{fontFamily: 'Poppins-Regular', fontSize: 14}}>{singleItemDetail.category}</Text>
-                  <View style={styles.ratingsContainer}>{RenderStars(4.9)}</View>
+                    <Text style={styles.titleTextStyles}>{handleItemTitle(singleItemDetail.title)}</Text>
+                    <Text style={{fontFamily: 'Poppins-Regular',fontSize: 14}}>{singleItemDetail.category}</Text>
+                    <View style={styles.ratingsContainer}>
+                      {RenderStars(4.9)}
+                      <Text style={styles.reviewTextStyles}>(260 Reviews)</Text>
+                    </View>
                   </View>
                   <View style={styles.quantityContainer}>
-                    <Pressable onPress={()=> setQuantity(quantity-1)}>
+                    <Pressable onPress={() => setQuantity(quantity - 1)}>
                       <Text style={styles.quantityTextStyles}>-</Text>
                     </Pressable>
                     <Text style={styles.quantityTextStyles}>{quantity}</Text>
-                    <Pressable onPress={()=> setQuantity(quantity+1)}>
+                    <Pressable onPress={() => setQuantity(quantity + 1)}>
                       <Text style={styles.quantityTextStyles}>+</Text>
                     </Pressable>
                   </View>
+                </View>
+                <View style={{marginTop: 40}}>
+                  <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 20}}>Size</Text>
+                  <Text>{singleItemDetail.description}</Text>
+                </View>
+                <View style={{marginTop: 40}}>
+                  <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 20}}>Desctiption</Text>
+                  <Text>{singleItemDetail.description}</Text>
                 </View>
               </View>
             </View>
@@ -130,7 +137,7 @@ const ProductDetail = props => {
             <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
             <Pressable
               style={styles.addToCart}
-              onPress={() => handleAddToCart()}>
+              onPress={() => handleAddToCart(singleItemDetail)}>
               <Feather name="shopping-cart" size={16} color="#000" />
               <Text style={styles.addToCartText}> Add to Cart</Text>
             </Pressable>
@@ -239,5 +246,13 @@ const styles = StyleSheet.create({
   },
   ratingsContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4
+  },
+  reviewTextStyles: {
+    color: '#000',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12
   },
 });
