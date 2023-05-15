@@ -1,7 +1,7 @@
-import {configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import dataSlice from './dataSlice';
-import cartSlice, { fetchCartItemsFromLocalStorage } from './cartSlice';
+import cartSlice, {fetchCartItemsFromLocalStorage} from './cartSlice';
 
 const store = configureStore({
   reducer: {data: dataSlice, cart: cartSlice},

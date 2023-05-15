@@ -18,6 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {addToCart} from '../../services/cartSlice';
+import {handleItemTitle} from '../../components/customFunctions'
 
 const ProductDetail = props => {
   const [quantity,setQuantity] = useState(0)
@@ -38,21 +39,6 @@ const ProductDetail = props => {
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
-  };
-
-  const handleItemTitle = str => {
-    let result = '';
-    let spaceCount = 0;
-    for(let i = 0; i < str.length; i++) {
-      if(str[i] === ' ') {
-        spaceCount++;
-        if(spaceCount === 2) {
-          break;
-        }
-      }
-      result += str[i];
-    }
-    return result;
   };
 
   const RenderStars = (rating) => {

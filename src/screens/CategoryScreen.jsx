@@ -13,6 +13,7 @@ import Header from '../components/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import useAuth from '../context/auth/useAuth';
+import {handleItemTitle} from '../components/customFunctions'
 
 const CategoryScreen = props => {
   const [dataToShow, setDataToShow] = useState([]);
@@ -29,20 +30,20 @@ const CategoryScreen = props => {
     }
   }, []);
 
-  const handleItemTitle = str => {
-    let result = '';
-    let spaceCount = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === ' ') {
-        spaceCount++;
-        if (spaceCount === 2) {
-          break;
-        }
-      }
-      result += str[i];
-    }
-    return result;
-  };
+  //const handleItemTitle = str => {
+  //  let result = '';
+  //  let spaceCount = 0;
+  //  for (let i = 0; i < str.length; i++) {
+  //    if (str[i] === ' ') {
+  //      spaceCount++;
+  //      if (spaceCount === 2) {
+  //        break;
+  //      }
+  //    }
+  //    result += str[i];
+  //  }
+  //  return result;
+  //};
 
   const handleFav = () => {
     setAdded(!added);

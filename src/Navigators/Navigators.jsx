@@ -22,7 +22,6 @@ const VerifiedNavigator = () => {
     <>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="home" component={HomeScreen} />
-        <Stack.Screen name="cart" component={CartScreen} />
         <Stack.Screen name="bell" component={NotificationScreen} />
         <Stack.Screen name="profile" component={ProfileScreen} />
         <Stack.Screen name="category" component={CategoryScreen} />
@@ -36,6 +35,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="verified" component={VerifiedNavigator} />
+      <Stack.Screen name="cart" component={CartScreen} />
       <Stack.Screen name="productDetail" component={ProductDetail} />
     </Stack.Navigator>
   );
@@ -105,9 +105,9 @@ export const BottomBarNavigator = () => {
     navigation.navigate(value);
   };
 
-    useEffect(()=> {
-    dispatch(subTotal())
-  }, [dispatch, cart])
+  //  useEffect(()=> {
+  //  dispatch(subTotal())
+  //}, [dispatch, cart])
 
   return (
     <View style={styles.container}>

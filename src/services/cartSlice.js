@@ -116,9 +116,7 @@ export const {
   increaseCartQuantity,
   subTotal
 } = cartSlice.actions;
-export default cartSlice.reducer;
 
-// Fetch local data and update cartItems in the initial state
 export const fetchCartItemsFromLocalStorage = () => async (dispatch) => {
   try {
     const cartItemsData = await AsyncStorage.getItem('cartItems');
@@ -131,7 +129,6 @@ export const fetchCartItemsFromLocalStorage = () => async (dispatch) => {
   }
 };
 
-// Set cart items action
 export const setCartItems = (cartItems) => {
   return {
     type: 'cart/setCartItems',
@@ -139,7 +136,6 @@ export const setCartItems = (cartItems) => {
   };
 };
 
-// Override the reducer to handle the setCartItems action
 cartSlice.reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'cart/setCartItems':
@@ -151,3 +147,6 @@ cartSlice.reducer = (state = initialState, action) => {
       return state;
   }
 };
+
+
+export default cartSlice.reducer;
