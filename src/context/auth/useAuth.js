@@ -60,6 +60,7 @@ export const AuthProvider = ({children}) => {
       alert('Password does not match');
       return;
     }
+    console.log('p_is', email, password, confirmPassword)
     setLoading(true);
     try {
       const response = await createUserWithEmailAndPassword(

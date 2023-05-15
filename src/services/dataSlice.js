@@ -31,7 +31,6 @@ export const getProductDetail = createAsyncThunk(
       const response = await axios.get(
         `https://fakestoreapi.com/products/${id}`,
       );
-      console.log('response_is', response);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -47,6 +46,11 @@ const dataSlice = createSlice({
     categoryItems: null,
     error: null,
     singleItemDetail: null,
+  },
+  reducers: {
+    removeDetail: (state)=> {
+      state.singleItemDetail = null
+    }
   },
   extraReducers: builder => {
     builder.addCase(getAllData.pending, state => {
@@ -80,8 +84,8 @@ const dataSlice = createSlice({
         state.error = null;
       }),
       builder.addCase(getProductDetail.fulfilled, (state, action) => {
-        state.singleItemDetail = action.payload;
         state.loading = false;
+        state.singleItemDetail = action.payload;
         state.error = null;
       });
     builder.addCase(getProductDetail.rejected, (state, action) => {
@@ -91,4 +95,5 @@ const dataSlice = createSlice({
   },
 });
 
+export const {removeDetail} = dataSlice.actions
 export default dataSlice.reducer;
