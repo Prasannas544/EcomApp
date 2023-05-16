@@ -8,54 +8,60 @@ import {
   Image,
   Pressable,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
-import React,{useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import useAuth from '../../context/auth/useAuth';
-import {getProductDetail,removeDetail} from '../../services/dataSlice';
+import {getProductDetail, removeDetail} from '../../services/dataSlice';
 import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {addToCart, decreaseCartQuantity, increaseCartQuantity, subTotal} from '../../services/cartSlice';
-import {handleItemTitle} from '../../components/customFunctions'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {
+  addToCart,
+  decreaseCartQuantity,
+  increaseCartQuantity,
+  subTotal,
+} from '../../services/cartSlice';
+import {handleItemTitle} from '../../components/customFunctions';
 
 const ProductDetail = props => {
-  const [quantity,setQuantity] = useState(0)
-  const {loading,singleItemDetail} = useSelector(state => state.data);
+  const [quantity, setQuantity] = useState(0);
+  const {loading, singleItemDetail} = useSelector(state => state.data);
+  const {cartItems} = useSelector(state => state.cart);
 
-  const {dispatch, navigation} = useAuth()
+  const {dispatch, navigation} = useAuth();
 
   const id = props.route.params.productID;
 
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {
-      dispatch(removeDetail())
-    }
-  },[dispatch]);
+      dispatch(removeDetail());
+    };
+  }, [dispatch]);
 
-  useEffect(()=> {
-    dispatch(subTotal())
-  }, [])
+  useEffect(() => {
+    dispatch(subTotal());
+  }, []);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = product => {
     dispatch(addToCart(product));
   };
 
-  const handleDecreaseCart = (cartItem) => {
+  const handleDecreaseCart = cartItem => {
     dispatch(decreaseCartQuantity(cartItem));
   };
 
-  const handleIncreaseCart = (cartItem) => {
+  const handleIncreaseCart = cartItem => {
     dispatch(increaseCartQuantity(cartItem));
   };
 
-  const RenderStars = (rating) => {
+  const RenderStars = rating => {
     const stars = [];
 
     // Render full stars
-    for(let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       const starIcon = i <= rating ? 'star' : 'star-o';
       stars.push(
         <FontAwesome
@@ -64,17 +70,20 @@ const ProductDetail = props => {
           size={16}
           color="#FFAC08"
           style={{marginRight: 3}}
-        />
+        />,
       );
     }
 
     return stars;
   };
 
-  //const isAddedAlready=(id)=> {
-  //  cartSlice.
-  //}
-
+  const isAddedAlready = id => {
+    let checkStatus = cartItems.some(item => item.id === id);
+    if (checkStatus) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <>
@@ -84,7 +93,7 @@ const ProductDetail = props => {
         </View>
       ) : (
         <>
-          <ScrollView style={{flex: 1,backgroundColor: '#FFF'}}>
+          <ScrollView style={{flex: 1, backgroundColor: '#FFF'}}>
             <StatusBar
               animated={true}
               backgroundColor={'#FFFFFF'}
@@ -93,12 +102,12 @@ const ProductDetail = props => {
             <View style={styles.pageContainer}>
               <View style={styles.imageAndHeaderContainer}>
                 {/*<Header goto={()=> navigation.dispatch(CommonActions.goBack())} />*/}
-                <Header goto={()=> navigation.goBack(null)} />
+                <Header goto={() => navigation.goBack(null)} />
                 {singleItemDetail && (
                   <View style={styles.carouselContainer}>
                     <Image
                       source={{uri: singleItemDetail.image}}
-                      style={{width: 250,height: 200,resizeMode: 'center'}}
+                      style={{width: 250, height: 200, resizeMode: 'center'}}
                     />
                   </View>
                 )}
@@ -106,8 +115,17 @@ const ProductDetail = props => {
               <View style={styles.productDetailContainer}>
                 <View style={styles.titleAndQuantityContainer}>
                   <View>
-                    <Text style={styles.titleTextStyles}>{handleItemTitle(singleItemDetail.title)}</Text>
-                    <Text style={{fontFamily: 'Poppins-Regular',fontSize: 14}}>{singleItemDetail.category}</Text>
+                    <Text style={styles.titleTextStyles}>
+                      {handleItemTitle(singleItemDetail.title)}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 14,
+                        color: '#000',
+                      }}>
+                      {singleItemDetail.category}
+                    </Text>
                     <View style={styles.ratingsContainer}>
                       {RenderStars(4.9)}
                       <Text style={styles.reviewTextStyles}>(260 Reviews)</Text>
@@ -121,28 +139,52 @@ const ProductDetail = props => {
                     <Pressable onPress={() => handleIncreaseCart(singleItemDetail)}>
                       <Text style={styles.quantityTextStyles}>+</Text>
                     </Pressable>*/}
-                    <Text>In stock</Text>
+                    <Text style={{color: '#000'}}>In stock</Text>
                   </View>
                 </View>
                 <View style={{marginTop: 40}}>
-                  <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 20}}>Size</Text>
-                  <Text>{singleItemDetail.description}</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Bold',
+                      color: '#000',
+                      fontSize: 20,
+                    }}>
+                    Size
+                  </Text>
+                  <Text style={{color: '#000', fontFamily: 'Poppins-Regular'}}>
+                    {singleItemDetail.description}
+                  </Text>
                 </View>
                 <View style={{marginTop: 40}}>
-                  <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 20}}>Desctiption</Text>
-                  <Text>{singleItemDetail.description}</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Bold',
+                      color: '#000',
+                      fontSize: 20,
+                    }}>
+                    Desctiption
+                  </Text>
+                  <Text style={{color: '#000', fontFamily: 'Poppins-Regular'}}>
+                    {singleItemDetail.description}
+                  </Text>
                 </View>
               </View>
             </View>
           </ScrollView>
           <View style={styles.bottomContainer}>
             <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
-            <TouchableOpacity
-              style={styles.addToCart}
-              onPress={()=> handleAddToCart(singleItemDetail)}>
-              <Feather name="shopping-cart" size={16} color="#000" />
-              <Text style={styles.addToCartText}> Add to Cart</Text>
-            </TouchableOpacity>
+            {isAddedAlready(singleItemDetail.id) ? (
+              <View style={styles.addToCart}>
+                <Text style={styles.addToCartText}> Already added</Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.addToCart}
+                onPress={() => handleAddToCart(singleItemDetail)}>
+                <Feather name="shopping-cart" size={16} color="#000" />
+                <Text style={styles.addToCartText}> Add to Cart</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </>
       )}
@@ -156,7 +198,7 @@ const styles = StyleSheet.create({
   loaderContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   wholeContainer: {
     flex: 1,
@@ -164,6 +206,7 @@ const styles = StyleSheet.create({
   },
   pageContainer: {
     position: 'relative',
+    paddingBottom: 50,
   },
   imageAndHeaderContainer: {
     paddingHorizontal: 20,
@@ -171,7 +214,7 @@ const styles = StyleSheet.create({
   carouselContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 30
+    paddingBottom: 30,
   },
   bottomContainer: {
     position: 'absolute',
@@ -215,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 20,
     shadowColor: '#000',
-    shadowOffset: {width: 0,height: 2},
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 20,
@@ -223,13 +266,13 @@ const styles = StyleSheet.create({
   titleTextStyles: {
     color: '#000',
     fontFamily: 'Poppins-Bold',
-    fontSize: 16
+    fontSize: 16,
   },
   titleAndQuantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 5
+    gap: 5,
   },
   quantityContainer: {
     borderRadius: 40,
@@ -239,22 +282,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 10
+    gap: 10,
   },
   quantityTextStyles: {
     color: '#000',
     fontFamily: 'Poppins-Bold',
-    fontSize: 16
+    fontSize: 16,
   },
   ratingsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4
+    gap: 4,
   },
   reviewTextStyles: {
     color: '#000',
     fontFamily: 'Poppins-Regular',
-    fontSize: 12
+    fontSize: 12,
   },
 });
