@@ -17,14 +17,13 @@ import {getProductDetail,removeDetail} from '../../services/dataSlice';
 import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {addToCart, subTotal} from '../../services/cartSlice';
+import {addToCart, decreaseCartQuantity, increaseCartQuantity, subTotal} from '../../services/cartSlice';
 import {handleItemTitle} from '../../components/customFunctions'
 
 const ProductDetail = props => {
   const [quantity,setQuantity] = useState(0)
   const {loading,singleItemDetail} = useSelector(state => state.data);
 
-  //const dispatch = useDispatch()
   const {dispatch, navigation} = useAuth()
 
   const id = props.route.params.productID;
@@ -42,6 +41,14 @@ const ProductDetail = props => {
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
+  };
+
+  const handleDecreaseCart = (cartItem) => {
+    dispatch(decreaseCartQuantity(cartItem));
+  };
+
+  const handleIncreaseCart = (cartItem) => {
+    dispatch(increaseCartQuantity(cartItem));
   };
 
   const RenderStars = (rating) => {
@@ -103,11 +110,11 @@ const ProductDetail = props => {
                     </View>
                   </View>
                   <View style={styles.quantityContainer}>
-                    <Pressable onPress={() => setQuantity(quantity - 1)}>
+                    <Pressable onPress={() => handleDecreaseCart(singleItemDetail)}>
                       <Text style={styles.quantityTextStyles}>-</Text>
                     </Pressable>
                     <Text style={styles.quantityTextStyles}>{quantity}</Text>
-                    <Pressable onPress={() => setQuantity(quantity + 1)}>
+                    <Pressable onPress={() => handleIncreaseCart(singleItemDetail)}>
                       <Text style={styles.quantityTextStyles}>+</Text>
                     </Pressable>
                   </View>

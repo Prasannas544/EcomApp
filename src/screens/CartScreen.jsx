@@ -1,10 +1,11 @@
-import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable, Button} from 'react-native';
-import React, {useEffect} from 'react';
+import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable, Button, Animated} from 'react-native';
+import React, {useEffect, useRef} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
 import {handleItemTitle} from '../components/customFunctions';
 import useAuth from '../context/auth/useAuth';
 import {clearCart, decreaseCartQuantity, increaseCartQuantity, removeFromCart, subTotal} from '../services/cartSlice';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart)
@@ -30,9 +31,55 @@ const CartScreen = () => {
     dispatch(subTotal());
   }, [dispatch, cart]);
 
+  const slideAnim = useRef(new Animated.Value(0)).current
+  const opacityAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   const SignleCartItem = ({item}) => {
+    //const slideAnim = useRef(new Animated.Value(0)).current
+    //const opacityAnim = useRef(new Animated.Value(0)).current;
+
+    //useEffect(() => {
+    //  Animated.parallel([
+    //    Animated.timing(slideAnim, {
+    //      toValue: 1,
+    //      duration: 500,
+    //      useNativeDriver: true,
+    //    }),
+    //    Animated.timing(opacityAnim, {
+    //      toValue: 1,
+    //      duration: 500,
+    //      useNativeDriver: true,
+    //    }),
+    //  ]).start();
+    //}, []);
+
     return (
-      <View style={styles.container}>
+      <Animated.View style={{...styles.container,
+        transform: [
+        {
+          translateX: slideAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-200, 0],
+          }),
+        },
+      ],
+      
+      }}>
         <View style={styles.leftSide}>
           <Image source={{uri: item.image}} style={{width: 70,height: 'auto', objectFit: 'contain'}} />
           <View style={styles.titleAndPriceText}>
@@ -54,7 +101,7 @@ const CartScreen = () => {
             <Text style={styles.quantityTextStyles}>+</Text>
           </Pressable>
         </View>
-      </View>
+      </Animated.View>
     )
   }
 
@@ -86,8 +133,11 @@ const CartScreen = () => {
       </View>
     </ScrollView>
     <View style={styles.PTCContianer}>
+        {/*<Text style={styles.priceContainer}>Total({3} items) : ₹212</Text>*/}
+        <Text style={styles.priceContainer}>Total: ₹{cart.cartTotalAmount}</Text>
       <Pressable style={styles.PTCButton}>
-        <Text style={{fontFamily: 'Poppins-Bold', color: '#FFF', textAlign: 'center', letterSpacing: 2}}>Proceed to Checkout</Text>
+        <MaterialCommunityIcons name='cart-arrow-right' size={16} color="#000" />
+        <Text style={{fontFamily: 'Poppins-Bold', color: '#000', textAlign: 'center'}}>Checkout now</Text>
       </Pressable>
       </View>
     </View>
@@ -145,14 +195,29 @@ const styles = StyleSheet.create({
   },
   PTCContianer: {
     width: '100%',
-    backgroundColor: '#FFF',
+    paddingVertical: 12,
+    backgroundColor: '#000',
     position: 'absolute',
     bottom: 0,
-    padding: 20
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 5,
+    paddingHorizontal: 20
   }, 
   PTCButton: {
-    backgroundColor: '#000',
-    borderRadius: 16,
-    paddingVertical: 12,
-  }
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    gap: 10,
+    backgroundColor: '#FFF',
+    paddingVertical: 10,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+  },
+  priceContainer: {
+    color: '#FFF',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+  },
 });
