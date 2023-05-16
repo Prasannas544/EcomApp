@@ -71,6 +71,10 @@ const ProductDetail = props => {
     return stars;
   };
 
+  //const isAddedAlready=(id)=> {
+  //  cartSlice.
+  //}
+
 
   return (
     <>
@@ -110,13 +114,14 @@ const ProductDetail = props => {
                     </View>
                   </View>
                   <View style={styles.quantityContainer}>
-                    <Pressable onPress={() => handleDecreaseCart(singleItemDetail)}>
+                    {/*<Pressable onPress={() => handleDecreaseCart(singleItemDetail)}>
                       <Text style={styles.quantityTextStyles}>-</Text>
                     </Pressable>
                     <Text style={styles.quantityTextStyles}>{quantity}</Text>
                     <Pressable onPress={() => handleIncreaseCart(singleItemDetail)}>
                       <Text style={styles.quantityTextStyles}>+</Text>
-                    </Pressable>
+                    </Pressable>*/}
+                    <Text>In stock</Text>
                   </View>
                 </View>
                 <View style={{marginTop: 40}}>
