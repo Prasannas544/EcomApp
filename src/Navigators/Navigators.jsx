@@ -94,20 +94,23 @@ const barData = [
   {id: 4, name: 'profile', icon: 'user'},
 ];
 
-export const BottomBarNavigator = () => {
+export const BottomBarNavigator = (props) => {
   const [activeTab, setActiveTab] = useState('home');
   const {navigation} = useAuth();
   const cart = useSelector((state)=> state.cart)
   const dispatch = useDispatch()
 
+  useEffect(()=> {
+    if(activeTab === 'cart'){
+      console.log('inside_this')
+      setActiveTab('home')
+    }
+  }, [activeTab])
+
   const handleClick = value => {
     setActiveTab(value);
     navigation.navigate(value);
   };
-
-  //  useEffect(()=> {
-  //  dispatch(subTotal())
-  //}, [dispatch, cart])
 
   return (
     <View style={styles.container}>

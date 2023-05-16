@@ -1,40 +1,62 @@
-import {View,Text,ScrollView,StyleSheet,StatusBar, Image, Pressable} from 'react-native';
-import React from 'react';
+import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable} from 'react-native';
+import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
-import { handleItemTitle } from '../components/customFunctions';
+import {handleItemTitle} from '../components/customFunctions';
+import useAuth from '../context/auth/useAuth';
+import {decreaseCartQuantity, increaseCartQuantity, removeFromCart, subTotal} from '../services/cartSlice';
 
 const CartScreen = () => {
-  const {cartItems} = useSelector((state) => state.cart)
-  console.log('cartItems_are',cartItems)
+  const cart = useSelector((state) => state.cart)
+  const {navigation, dispatch} = useAuth()
 
-const SignleCartItem =({item})=> {
-  return (
-    <View style={styles.container}>
-      <View style={styles.leftSide}>
-        <Image source={{uri: item.image}} style={{width: 90, height: 'auto', borderRadius: 30}} />
-        <View style={styles.titleAndPriceText}>
-          <View>
-          <Text style={{fontFamily: 'Poppins-Bold', color: '#000', marginBottom: -5, fontSize: 18}}>{handleItemTitle(item.title)}</Text>
-          <Text style={{fontFamily: 'Poppins-Regular', color: '#BCBCBC'}}>{handleItemTitle(item.category)}</Text>
-          </View>
-          <View>
-            <Text style={{fontFamily: 'Poppins-Bold', color: '#000', fontSize: 18}}>₹{item.price}</Text>
+  const handleRemoveFromCart = (cartItem) => {
+    dispatch(removeFromCart(cartItem));
+  };
+
+  const handleDecreaseCart = (cartItem) => {
+    dispatch(decreaseCartQuantity(cartItem));
+  };
+
+  const handleIncreaseCart = (cartItem) => {
+    dispatch(increaseCartQuantity(cartItem));
+  };
+
+  useEffect(() => {
+    dispatch(subTotal());
+  }, [dispatch, cart]);
+
+  console.log('cart_items', cart.cartItems)
+
+  const SignleCartItem = ({item}) => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.leftSide}>
+          <Image source={{uri: item.image}} style={{width: 70,height: 'auto',borderRadius: 30}} />
+          <View style={styles.titleAndPriceText}>
+            <View>
+              <Text style={{fontFamily: 'Poppins-Bold',color: '#000',marginBottom: -5,fontSize: 18}}>{handleItemTitle(item.title)}</Text>
+              <Text style={{fontFamily: 'Poppins-Regular',color: '#BCBCBC'}}>{handleItemTitle(item.category)}</Text>
+            </View>
+            <View>
+              <Text style={{fontFamily: 'Poppins-Bold',color: '#000',fontSize: 18}}>₹{item.price}</Text>
+            </View>
           </View>
         </View>
+        <View style={styles.quantityContainer}>
+          <Pressable onPress={()=> handleDecreaseCart(item) }>
+            <Text style={styles.quantityTextStyles}>-</Text>
+          </Pressable>
+          <Text style={styles.quantityTextStyles}>{item.cartQuantity}</Text>
+          <Pressable onPress={()=> handleIncreaseCart(item)}>
+            <Text style={styles.quantityTextStyles}>+</Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.quantityContainer}>
-                    <Pressable >
-                      <Text style={styles.quantityTextStyles}>-</Text>
-                    </Pressable>
-                    <Text style={styles.quantityTextStyles}>{10}</Text>
-                    <Pressable >
-                      <Text style={styles.quantityTextStyles}>+</Text>
-                    </Pressable>
-                  </View>
-    </View>
-  )
-}
+    )
+  }
+
+  console.log('cart.cartItems_are', cart.cartItems)
 
   return (
     <ScrollView style={styles.wholeContainer}>
@@ -44,18 +66,18 @@ const SignleCartItem =({item})=> {
         backgroundColor={'#FFFFFF'}
         barStyle={'dark-content'}
       />
-      <Header />
-      {cartItems && 
-            <View style={styles.contentContainer}>
-            <Text style={styles.myCartText}>My Cart</Text>
-            <View>
-              {cartItems.map((item)=> {
-                return (
+      <Header goto={() => navigation.navigate('home')} />
+      {cart.cartItems &&
+        <View style={styles.contentContainer}>
+          <Text style={styles.myCartText}>My Cart</Text>
+          <View>
+            {cart.cartItems.map((item) => {
+              return (
                 <SignleCartItem item={item} key={item.id} />
-                )
-              })}
-            </View>
+              )
+            })}
           </View>
+        </View>
       }
       {/*</SafeAreaView>*/}
     </ScrollView>
@@ -71,7 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     position: 'relative',
   },
-  contentContainer:{},
+  contentContainer: {},
   myCartText: {
     fontFamily: 'Poppins-Bold',
     color: '#000',
@@ -89,7 +111,7 @@ const styles = StyleSheet.create({
   },
   leftSide: {
     flexDirection: 'row',
-    gap: 5
+    gap: 8
   },
   titleAndPriceText: {
     alignItems: 'flex-start',

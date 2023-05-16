@@ -3,15 +3,15 @@ import React from 'react'
 import {CommonActions, useNavigation} from "@react-navigation/native"
 import {useDispatch} from 'react-redux'
 
-const Header = () => {
+const Header = ({goto}) => {
   const navigation = useNavigation()
 
-  const handleGoBack = () => {
-    navigation.dispatch(CommonActions.goBack())
-  }
+  //const handleGoBack = () => {
+  //  navigation.dispatch(CommonActions.goBack())
+  //}
 
   return (
-    <Pressable style={styles.container} onPress={()=> handleGoBack() }>
+    <Pressable style={styles.container} onPress={goto }>
         <View style={styles.imageContainer}>
       <Image source={require('../assets/back_vector.png')} style={styles.imageStyles} />
       </View>

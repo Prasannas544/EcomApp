@@ -30,21 +30,6 @@ const CategoryScreen = props => {
     }
   }, []);
 
-  //const handleItemTitle = str => {
-  //  let result = '';
-  //  let spaceCount = 0;
-  //  for (let i = 0; i < str.length; i++) {
-  //    if (str[i] === ' ') {
-  //      spaceCount++;
-  //      if (spaceCount === 2) {
-  //        break;
-  //      }
-  //    }
-  //    result += str[i];
-  //  }
-  //  return result;
-  //};
-
   const handleFav = () => {
     setAdded(!added);
   };
@@ -88,7 +73,7 @@ const CategoryScreen = props => {
         backgroundColor={'#E5E5E5'}
         barStyle={'dark-content'}
       />
-      <Header goBack={props.canGoBack} />
+       <Header goto={()=> navigation.goBack(null)} />
       <Text style={styles.categoryTextStyle}>
         {props.route.params.category_name}
       </Text>

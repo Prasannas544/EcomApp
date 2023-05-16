@@ -5,12 +5,12 @@ import cartSlice, {fetchCartItemsFromLocalStorage} from './cartSlice';
 
 const store = configureStore({
   reducer: {data: dataSlice, cart: cartSlice},
-  middleware: getDefaultMiddleware((middlewareConfig) => {
-    middlewareConfig.serializableCheck.ignoredActions = [
-      ...middlewareConfig.serializableCheck.ignoredActions,
-      fetchCartItemsFromLocalStorage.type,
-    ];
-  }),
+  //middleware: getDefaultMiddleware((middlewareConfig) => {
+  //  middlewareConfig.serializableCheck.ignoredActions = [
+  //    ...middlewareConfig.serializableCheck.ignoredActions,
+  //    fetchCartItemsFromLocalStorage.type,
+  //  ];
+  //}),
 });
 
 store.dispatch(fetchCartItemsFromLocalStorage());

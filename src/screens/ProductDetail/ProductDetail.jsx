@@ -7,35 +7,38 @@ import {
   ActivityIndicator,
   Image,
   Pressable,
-  Platform
+  Platform,
+  TouchableOpacity
 } from 'react-native';
 import React,{useState,useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import useAuth from '../../context/auth/useAuth';
 import {getProductDetail,removeDetail} from '../../services/dataSlice';
 import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
-import Toast from 'react-native-toast-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {addToCart} from '../../services/cartSlice';
+import {addToCart, subTotal} from '../../services/cartSlice';
 import {handleItemTitle} from '../../components/customFunctions'
 
 const ProductDetail = props => {
   const [quantity,setQuantity] = useState(0)
   const {loading,singleItemDetail} = useSelector(state => state.data);
 
-  const {dispatch} = useAuth();
+  //const dispatch = useDispatch()
+  const {dispatch, navigation} = useAuth()
 
   const id = props.route.params.productID;
 
   useEffect(() => {
     dispatch(getProductDetail(id));
-
     return () => {
       dispatch(removeDetail())
     }
-
   },[dispatch]);
+
+  useEffect(()=> {
+    dispatch(subTotal())
+  }, [])
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -78,7 +81,8 @@ const ProductDetail = props => {
             />
             <View style={styles.pageContainer}>
               <View style={styles.imageAndHeaderContainer}>
-                <Header />
+                {/*<Header goto={()=> navigation.dispatch(CommonActions.goBack())} />*/}
+                <Header goto={()=> navigation.goBack(null)} />
                 {singleItemDetail && (
                   <View style={styles.carouselContainer}>
                     <Image
@@ -121,12 +125,12 @@ const ProductDetail = props => {
           </ScrollView>
           <View style={styles.bottomContainer}>
             <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
-            <Pressable
+            <TouchableOpacity
               style={styles.addToCart}
-              onPress={() => handleAddToCart(singleItemDetail)}>
+              onPress={()=> handleAddToCart(singleItemDetail)}>
               <Feather name="shopping-cart" size={16} color="#000" />
               <Text style={styles.addToCartText}> Add to Cart</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </>
       )}

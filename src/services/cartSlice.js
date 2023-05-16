@@ -2,15 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createSlice} from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
 
-//const initialState = {
-//  cartItems: AsyncStorage.getItem('cartItems') ?
-//    JSON.parse(AsyncStorage.getItem('cartItems'))
-//      :
-//    [],
-//    cartTotalQuantity: 0,
-//    cartTotalAmount: 0
-//  };
-
 
 const initialState = {
   cartItems: [],
@@ -26,6 +17,7 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         cart => cart.id === action.payload.id,
       );
+      console.log(' ', itemIndex)
       if(itemIndex >= 0) {
         state.cartItems[itemIndex].cartQuantity += 1;
         Toast.show({
@@ -38,7 +30,7 @@ const cartSlice = createSlice({
           visibilityTime: 3000, // Duration to show the toast in milliseconds (optional)
         });
       } else {
-        const tempProducts = {...action.payload,cartItems: 1};
+        const tempProducts = {...action.payload, cartItems: 1};
         state.cartItems.push(tempProducts);
         Toast.show({
           type: 'success',
@@ -47,7 +39,7 @@ const cartSlice = createSlice({
           visibilityTime: 3000, // Duration to show the toast in milliseconds (optional)
         });
       }
-      AsyncStorage.setItem('cartItems',JSON.stringify(state.cartItems));
+        AsyncStorage.setItem('cartItems',JSON.stringify(state.cartItems));
     },
     removeFromCart: (state,action) => {
       const newCartItem = state.cartItems.filter(
@@ -114,6 +106,7 @@ export const {
   removeFromCart,
   decreaseCartQuantity,
   increaseCartQuantity,
+  clearCart,
   subTotal
 } = cartSlice.actions;
 
@@ -122,31 +115,12 @@ export const fetchCartItemsFromLocalStorage = () => async (dispatch) => {
     const cartItemsData = await AsyncStorage.getItem('cartItems');
     if (cartItemsData) {
       const parsedCartItems = JSON.parse(cartItemsData);
-      dispatch(setCartItems(parsedCartItems));
+      //dispatch(setCartItems(parsedCartItems));
+      initialState.cartItems = parsedCartItems
     }
   } catch (error) {
     console.log('Error fetching cart items:', error);
   }
 };
-
-export const setCartItems = (cartItems) => {
-  return {
-    type: 'cart/setCartItems',
-    payload: cartItems,
-  };
-};
-
-cartSlice.reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'cart/setCartItems':
-      return {
-        ...state,
-        cartItems: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
 
 export default cartSlice.reducer;
