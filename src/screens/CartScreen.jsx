@@ -34,7 +34,7 @@ const CartScreen = () => {
     return (
       <View style={styles.container}>
         <View style={styles.leftSide}>
-          <Image source={{uri: item.image}} style={{width: 70,height: 'auto',borderRadius: 30}} />
+          <Image source={{uri: item.image}} style={{width: 70,height: 'auto', objectFit: 'contain'}} />
           <View style={styles.titleAndPriceText}>
             <View>
               <Text style={{fontFamily: 'Poppins-Bold',color: '#000',marginBottom: -5,fontSize: 18}}>{handleItemTitle(item.title)}</Text>
@@ -59,6 +59,7 @@ const CartScreen = () => {
   }
 
   return (
+    <View style={{flex: 1, position: 'relative'}}>
     <ScrollView style={styles.wholeContainer}>
       {/*<SafeAreaView>*/}
       <StatusBar
@@ -66,6 +67,7 @@ const CartScreen = () => {
         backgroundColor={'#FFFFFF'}
         barStyle={'dark-content'}
       />
+      <View style={{position: 'relative', flex: 1}}>
       <Header goto={() => navigation.navigate('home')} />
       {cart.cartItems &&
         <View style={styles.contentContainer}>
@@ -81,7 +83,14 @@ const CartScreen = () => {
       }
       {/*</SafeAreaView>*/}
       <Button title='clear cart' onPress={()=> handleClearCart()} />
+      </View>
     </ScrollView>
+    <View style={styles.PTCContianer}>
+      <Pressable style={styles.PTCButton}>
+        <Text style={{fontFamily: 'Poppins-Bold', color: '#FFF', textAlign: 'center', letterSpacing: 2}}>Proceed to Checkout</Text>
+      </Pressable>
+      </View>
+    </View>
   );
 };
 
@@ -89,10 +98,9 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   wholeContainer: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    position: 'relative',
   },
   contentContainer: {},
   myCartText: {
@@ -107,8 +115,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 30,
     paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#BCBCBC'
+    borderBottomWidth: 0.5,
+    //borderBottomColor: '#BCBCBC'
+    borderBottomColor: '#dbdbdb'
   },
   leftSide: {
     flexDirection: 'row',
@@ -134,4 +143,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 16
   },
+  PTCContianer: {
+    width: '100%',
+    backgroundColor: '#FFF',
+    position: 'absolute',
+    bottom: 0,
+    padding: 20
+  }, 
+  PTCButton: {
+    backgroundColor: '#000',
+    borderRadius: 16,
+    paddingVertical: 12,
+  }
 });
