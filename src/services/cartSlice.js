@@ -17,9 +17,9 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         cart => cart.id === action.payload.id,
       );
-      console.log(' ', itemIndex)
       if(itemIndex >= 0) {
         state.cartItems[itemIndex].cartQuantity += 1;
+        console.log('cartQuantity_is', state.cartItems[itemIndex].cartQuantity)
         Toast.show({
           type: 'success',
           text1: 'Added to Cart',
@@ -30,7 +30,7 @@ const cartSlice = createSlice({
           visibilityTime: 3000, // Duration to show the toast in milliseconds (optional)
         });
       } else {
-        const tempProducts = {...action.payload, cartItems: 1};
+        const tempProducts =  {...action.payload, cartQuantity: 1};
         state.cartItems.push(tempProducts);
         Toast.show({
           type: 'success',
@@ -75,6 +75,12 @@ const cartSlice = createSlice({
       );
       state.cartItems[itemIndex].cartQuantity += 1;
       AsyncStorage.setItem("cartItems",JSON.stringify(state.cartItems));
+      Toast.show({
+        type: 'success',
+        text1: 'Item Increased',
+        text2: `${action.payload.title} quantity increased to ${state.cartItems[itemIndex].cartQuntity}`,
+        visibilityTime: 3000, // Duration to show the toast in milliseconds (optional)
+      });
     },
     clearCart: (state,action) => {
       state.cartItems = [];

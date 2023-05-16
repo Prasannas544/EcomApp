@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cartQunatityLengthText: {
-    color: 'gold',
-    fontFamily: 'Poppins-Regular'
+    color: '#FFF',
+    fontFamily: 'Poppins-Bold'
   }
 });

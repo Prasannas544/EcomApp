@@ -1,10 +1,10 @@
-import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable} from 'react-native';
+import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable, Button} from 'react-native';
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
 import {handleItemTitle} from '../components/customFunctions';
 import useAuth from '../context/auth/useAuth';
-import {decreaseCartQuantity, increaseCartQuantity, removeFromCart, subTotal} from '../services/cartSlice';
+import {clearCart, decreaseCartQuantity, increaseCartQuantity, removeFromCart, subTotal} from '../services/cartSlice';
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart)
@@ -22,11 +22,13 @@ const CartScreen = () => {
     dispatch(increaseCartQuantity(cartItem));
   };
 
+  const handleClearCart=()=> {
+    dispatch(clearCart())
+  }
+
   useEffect(() => {
     dispatch(subTotal());
   }, [dispatch, cart]);
-
-  console.log('cart_items', cart.cartItems)
 
   const SignleCartItem = ({item}) => {
     return (
@@ -56,8 +58,6 @@ const CartScreen = () => {
     )
   }
 
-  console.log('cart.cartItems_are', cart.cartItems)
-
   return (
     <ScrollView style={styles.wholeContainer}>
       {/*<SafeAreaView>*/}
@@ -80,6 +80,7 @@ const CartScreen = () => {
         </View>
       }
       {/*</SafeAreaView>*/}
+      <Button title='clear cart' onPress={()=> handleClearCart()} />
     </ScrollView>
   );
 };
