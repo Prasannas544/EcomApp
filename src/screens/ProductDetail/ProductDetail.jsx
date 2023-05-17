@@ -175,7 +175,7 @@ const ProductDetail = props => {
             <Text style={styles.priceContainer}>₹{singleItemDetail.price}</Text>
             {isAddedAlready(singleItemDetail.id) ? (
               <View style={styles.addToCart}>
-                <Text style={styles.addToCartText}> Already added</Text>
+                <Text style={styles.addToCartText}>In Cart</Text>
               </View>
             ) : (
               <TouchableOpacity

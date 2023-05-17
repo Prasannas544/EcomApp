@@ -7,8 +7,9 @@ import {
   FlatList,
   Image,
   Pressable,
+  Animated
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Header from '../components/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -38,10 +39,38 @@ const CategoryScreen = props => {
     navigation.navigate('productDetail', {productID: id});
   };
 
+  const slideAnim = useRef(new Animated.Value(0)).current
+  const opacityAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   const SingleContainer = ({item}) => {
+    const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
     return (
-      <Pressable
-        style={styles.singleWholeContainer}
+      <AnimatedPressable
+        style={{...styles.singleWholeContainer, 
+          transform: [
+            {
+              translateX: slideAnim.interpolate({
+                inputRange: [0,1],
+                outputRange: [-100,0],
+              }),
+            },
+          ],
+        }}
         onPress={() => handleGoingToDetailPage(item.id)}>
         <Pressable style={styles.heartContainer} onPress={handleFav}>
           {added ? (
@@ -62,7 +91,7 @@ const CategoryScreen = props => {
           <Text style={styles.categoryStyle}>{item.category}</Text>
           <Text style={[styles.titlText, {fontSize: 18}]}>₹{item.price}</Text>
         </View>
-      </Pressable>
+      </AnimatedPressable>
     );
   };
 

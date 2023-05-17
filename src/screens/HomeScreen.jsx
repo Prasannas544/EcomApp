@@ -45,6 +45,7 @@ const HomeScreen = () => {
           placeholderTextColor={'#ADADAD'}
         />
       </View>
+      {/*<CustomCarousel  />*/}
       <SingleCategory
         headerText={'New Arrivals'}
         quantity={'220'}
@@ -80,7 +81,6 @@ const HomeScreen = () => {
         direction="row"
         dataFor="jewelery"
       />
-      <Button onPress={() => handleLogout(0)} title="Log out" />
     </ScrollView>
   );
 };

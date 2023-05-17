@@ -1,15 +1,15 @@
-import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable, Button, Animated} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import {View,Text,ScrollView,StyleSheet,StatusBar,Image,Pressable,Button,Animated} from 'react-native';
+import React,{useEffect,useRef} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
 import {handleItemTitle} from '../components/customFunctions';
 import useAuth from '../context/auth/useAuth';
-import {clearCart, decreaseCartQuantity, increaseCartQuantity, removeFromCart, subTotal} from '../services/cartSlice';
+import {clearCart,decreaseCartQuantity,increaseCartQuantity,removeFromCart,subTotal} from '../services/cartSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart)
-  const {navigation, dispatch} = useAuth()
+  const {navigation,dispatch} = useAuth()
 
   const handleRemoveFromCart = (cartItem) => {
     dispatch(removeFromCart(cartItem));
@@ -23,65 +23,47 @@ const CartScreen = () => {
     dispatch(increaseCartQuantity(cartItem));
   };
 
-  const handleClearCart=()=> {
+  const handleClearCart = () => {
     dispatch(clearCart())
   }
 
   useEffect(() => {
     dispatch(subTotal());
-  }, [dispatch, cart]);
+  },[dispatch,cart]);
 
   const slideAnim = useRef(new Animated.Value(0)).current
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(slideAnim, {
+      Animated.timing(slideAnim,{
         toValue: 1,
         duration: 500,
         useNativeDriver: true,
       }),
-      Animated.timing(opacityAnim, {
+      Animated.timing(opacityAnim,{
         toValue: 1,
         duration: 500,
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  },[]);
 
   const SignleCartItem = ({item}) => {
-    //const slideAnim = useRef(new Animated.Value(0)).current
-    //const opacityAnim = useRef(new Animated.Value(0)).current;
-
-    //useEffect(() => {
-    //  Animated.parallel([
-    //    Animated.timing(slideAnim, {
-    //      toValue: 1,
-    //      duration: 500,
-    //      useNativeDriver: true,
-    //    }),
-    //    Animated.timing(opacityAnim, {
-    //      toValue: 1,
-    //      duration: 500,
-    //      useNativeDriver: true,
-    //    }),
-    //  ]).start();
-    //}, []);
-
     return (
-      <Animated.View style={{...styles.container,
+      <Animated.View style={{
+        ...styles.container,
         transform: [
-        {
-          translateX: slideAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-200, 0],
-          }),
-        },
-      ],
-      
+          {
+            translateX: slideAnim.interpolate({
+              inputRange: [0,1],
+              outputRange: [-200,0],
+            }),
+          },
+        ],
       }}>
         <View style={styles.leftSide}>
-          <Image source={{uri: item.image}} style={{width: 70,height: 'auto', objectFit: 'contain'}} />
+          <Image source={{uri: item.image}} style={{width: 70,height: 'auto',objectFit: 'contain'}} />
           <View style={styles.titleAndPriceText}>
             <View>
               <Text style={{fontFamily: 'Poppins-Bold',color: '#000',marginBottom: -5,fontSize: 18}}>{handleItemTitle(item.title)}</Text>
@@ -93,11 +75,11 @@ const CartScreen = () => {
           </View>
         </View>
         <View style={styles.quantityContainer}>
-          <Pressable onPress={()=> handleDecreaseCart(item) }>
+          <Pressable onPress={() => handleDecreaseCart(item)}>
             <Text style={styles.quantityTextStyles}>-</Text>
           </Pressable>
           <Text style={styles.quantityTextStyles}>{item.cartQuantity}</Text>
-          <Pressable onPress={()=> handleIncreaseCart(item)}>
+          <Pressable onPress={() => handleIncreaseCart(item)}>
             <Text style={styles.quantityTextStyles}>+</Text>
           </Pressable>
         </View>
@@ -106,39 +88,40 @@ const CartScreen = () => {
   }
 
   return (
-    <View style={{flex: 1, position: 'relative'}}>
-    <ScrollView style={styles.wholeContainer}>
-      {/*<SafeAreaView>*/}
-      <StatusBar
-        animated={true}
-        backgroundColor={'#FFFFFF'}
-        barStyle={'dark-content'}
-      />
-      <View style={{position: 'relative', flex: 1}}>
-      <Header goto={() => navigation.navigate('home')} />
-      {cart.cartItems &&
-        <View style={styles.contentContainer}>
-          <Text style={styles.myCartText}>My Cart</Text>
-          <View>
-            {cart.cartItems.map((item) => {
-              return (
-                <SignleCartItem item={item} key={item.id} />
-              )
-            })}
-          </View>
+    <View style={{flex: 1,position: 'relative'}}>
+      <ScrollView style={styles.wholeContainer}>
+        {/*<SafeAreaView>*/}
+        <StatusBar
+          animated={true}
+          backgroundColor={'#FFFFFF'}
+          barStyle={'dark-content'}
+        />
+        <View style={{position: 'relative',flex: 1}}>
+          <Header goto={() => navigation.navigate('home')} />
+          <View></View>
+          {cart.cartItems &&
+            <View style={styles.contentContainer}>
+              <Text style={styles.myCartText}>My Cart</Text>
+              <View>
+                {cart.cartItems.map((item) => {
+                  return (
+                    <SignleCartItem item={item} key={item.id} />
+                  )
+                })}
+              </View>
+            </View>
+          }
+          {/*</SafeAreaView>*/}
+          <Button title='clear cart' onPress={() => handleClearCart()} />
         </View>
-      }
-      {/*</SafeAreaView>*/}
-      <Button title='clear cart' onPress={()=> handleClearCart()} />
-      </View>
-    </ScrollView>
-    <View style={styles.PTCContianer}>
+      </ScrollView>
+      <View style={styles.PTCContianer}>
         {/*<Text style={styles.priceContainer}>Total({3} items) : ₹212</Text>*/}
-        <Text style={styles.priceContainer}>Total: ₹{cart.cartTotalAmount}</Text>
-      <Pressable style={styles.PTCButton}>
-        <MaterialCommunityIcons name='cart-arrow-right' size={16} color="#000" />
-        <Text style={{fontFamily: 'Poppins-Bold', color: '#000', textAlign: 'center'}}>Checkout now</Text>
-      </Pressable>
+        <Text style={styles.priceContainer}>Total: ₹{cart.cartTotalAmount.toFixed(0)}</Text>
+        <Pressable style={styles.PTCButton}>
+          <MaterialCommunityIcons name='cart-arrow-right' size={16} color="#000" />
+          <Text style={{fontFamily: 'Poppins-Bold',color: '#000',textAlign: 'center'}}>Checkout now</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -204,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 5,
     paddingHorizontal: 20
-  }, 
+  },
   PTCButton: {
     flexDirection: 'row',
     alignItems: 'center',
