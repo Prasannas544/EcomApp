@@ -56,6 +56,8 @@ export const AuthProvider = ({children}) => {
     //   return;
     // }
 
+    console.log('c_here', password, confirmPassword)
+
     if (password !== confirmPassword) {
       alert('Password does not match');
       return;
@@ -68,10 +70,13 @@ export const AuthProvider = ({children}) => {
         email,
         password,
       );
+      console.log('res')
       await AsyncStorage.setItem('userToken', response._tokenResponse.localId);
+      console.log('new user created')
       setLoading(false);
       setUser(true);
     } catch (err) {
+      console.log('err_newuser', err)
       setError(err);
       setLoading(false);
     }

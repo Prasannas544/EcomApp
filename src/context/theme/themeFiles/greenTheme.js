@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native'
 
 const greenTheme = StyleSheet.create({
     backgroundColor: {
-        backgroundColor: '#ff0000'
+        backgroundColor: '#0dff05'
     },
     textPromaryColor: {
         color: '#FFF'
