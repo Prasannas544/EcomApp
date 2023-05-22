@@ -1,9 +1,7 @@
 import {StyleSheet} from 'react-native'
 
 const lightTheme = StyleSheet.create({
-    backgroundColor: {
-        backgroundColor: '#FFF'
-    },
+    backgroundColor: '#FFF',
     textPromaryColor: {
         color: '#000'
     },

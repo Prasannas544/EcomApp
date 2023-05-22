@@ -1,8 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import lightTheme from "./themeFiles/lightTheme";
 import blackTheme from './themeFiles/blackTheme'
-import redTheme from "./themeFiles/redTheme";
-import greenTheme from "./themeFiles/greenTheme";
 
 export const ThemeContext = createContext();
 
@@ -14,7 +12,7 @@ export const ThemeProvider=({children})=> {
     }
 
     return (
-        <ThemeContext.Provider value={{currentTheme, setCurrentTheme, handleThemeChange, lightTheme, blackTheme, redTheme, greenTheme}}>
+        <ThemeContext.Provider value={{currentTheme, setCurrentTheme, handleThemeChange, lightTheme, blackTheme}}>
             {children}
         </ThemeContext.Provider>
     )

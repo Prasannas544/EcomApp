@@ -1,15 +1,9 @@
 import {StyleSheet} from 'react-native'
 
 const blackTheme = StyleSheet.create({
-    backgroundColor: {
-        backgroundColor: '#000'
-    },
-    textPromaryColor: {
-        color: '#FFF'
-    },
-    textSecondaryColor: {
-        color: '#525151'
-    }
+    backgroundColor: '#000',
+    textPromaryColor: '#FFF',
+    textSecondaryColor: '#525151'
 })
 
 export default blackTheme

@@ -6,20 +6,20 @@ import useAuth from '../context/auth/useAuth'
 import useTheme from '../context/theme/useTheme'
 
 const ProfileScreen = () => {
-  const {handleLogout} = useAuth();
+  const {handleLogout, navigation} = useAuth();
   const {handleThemeChange, currentTheme, lightTheme, blackTheme, redTheme, greenTheme} = useTheme()
 
   console.log('theme_is', currentTheme)
 
   return (
     <View style={{flex: 1, backgroundColor: currentTheme.backgroundColor}}>
-     <ScrollView style={{...styles.wholeContainer, ...currentTheme.backgroundColor}}>
+     <ScrollView style={{...styles.wholeContainer}}>
      <StatusBar
           animated={true}
           backgroundColor={'#FFFFFF'}
           barStyle={'dark-content'}
         />
-          <Header goto={()=> navigation.goBack(null)} />
+          {/*<Header goto={()=> navigation.goBack(null)} />*/}
           <View style={{...styles.avatarContainer, backgroundColor: currentTheme.backgroundColor}}>
             <Entypo name='add-user' color='#000' size={48} />
           </View>
