@@ -7,7 +7,7 @@ import useTheme from '../context/theme/useTheme'
 
 const ProfileScreen = () => {
   const {handleLogout, navigation} = useAuth();
-  const {handleThemeChange, currentTheme, lightTheme, blackTheme, redTheme, greenTheme} = useTheme()
+  const {handleThemeChange, currentTheme, lightTheme, blackTheme} = useTheme()
 
   console.log('theme_is', currentTheme)
 
@@ -27,8 +27,6 @@ const ProfileScreen = () => {
           <View style={{marginTop: 20}}>
           <Button onPress={()=> handleThemeChange(blackTheme)} title='Black Theme' />
           <Button onPress={()=> handleThemeChange(lightTheme)} title='light Theme' />
-          <Button onPress={()=> handleThemeChange(redTheme)} title='Red Theme' />
-          <Button onPress={()=> handleThemeChange(greenTheme)} title='Green Theme' />
           </View>
      </ScrollView>
     </View>
