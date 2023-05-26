@@ -26,7 +26,7 @@ const HomeScreen = () => {
       <StatusBar
         animated={true}
         backgroundColor={currentTheme.backgroundColor}
-        barStyle={'dark-content'}
+        barStyle={currentTheme.backgroundColor === '#000' ? 'light-content' : 'dark-content'}
       />
       {/*<Header />*/}
       <View
@@ -36,10 +36,10 @@ const HomeScreen = () => {
           justifyContent: 'space-between',
           paddingVertical: 10,
         }}>
-        <Text style={{fontFamily: 'Poppins-Bold', color: currentTheme.textPromaryColor, fontSize: 26}}>
+        <Text style={{fontFamily: 'Poppins-Bold', color: currentTheme.textPrimaryColor, fontSize: 20}}>
           Welcome!
         </Text>
-        <FontAwesome name="user" size={36} color={currentTheme.textPromaryColor} />
+        <FontAwesome name="user" size={24} color={currentTheme.textPrimaryColor} />
       </View>
       <View style={styles.searchContainer}>
         <Feather name="search" size={26} color="#000" />

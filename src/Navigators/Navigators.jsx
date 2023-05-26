@@ -14,6 +14,7 @@ import ProductDetail from '../screens/ProductDetail/ProductDetail';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getCartItemsFromLocal, subTotal} from '../services/cartSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import useTheme from '../context/theme/useTheme';
 
 const Stack = createStackNavigator();
 
@@ -99,6 +100,7 @@ export const BottomBarNavigator = (props) => {
   const {navigation} = useAuth();
   const cart = useSelector((state)=> state.cart)
   const dispatch = useDispatch()
+  const {currentTheme} = useTheme()
 
   useEffect(()=> {
     if(activeTab === 'cart'){
@@ -113,7 +115,7 @@ export const BottomBarNavigator = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, backgroundColor: currentTheme.backgroundColor}}>
       {barData.map(item => {
         return (
           <View key={item.id} style={styles.singleContainer}>
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: 15,
     width: '100%',
-    backgroundColor: '#FFF',
+    //backgroundColor: '#FFF',
     paddingHorizontal: 10,
   },
   singleContainer: {

@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native'
 
 const blackTheme = StyleSheet.create({
     backgroundColor: '#000',
-    textPromaryColor: '#FFF',
+    secondaryBackgroundColor: '#828181',
+    textPrimaryColor: '#FFF',
     textSecondaryColor: '#525151'
 })
 
